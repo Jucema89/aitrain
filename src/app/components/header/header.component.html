@@ -13,11 +13,14 @@
       </div>
       <div id="navbar-collapse-with-animation" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block">
         <div class="flex flex-col sm:flex-row sm:items-center py-2 md:py-0 sm:ps-7">
-            
-          <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-blue-600 dark:text-blue-500" routerLink="/" routerLinkActive="active" aria-current="page" href="/">Inicio</a>
 
-          <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-gray-500 hover:text-gray-400 dark:text-neutral-400 dark:hover:text-neutral-500" routerLink="/create" routerLinkActive="active" href="/create" ariaCurrentWhenActive="page">Crear Entrenamiento</a>
-  
+            @for(route of rotesUrl; track route.id){
+              <a class="py-3 ps-px sm:px-3 sm:py-6 font-medium text-gray-400 active:text-blue-500 hover:text-gray-600 "
+              [routerLink]="[route.url]"
+              routerLinkActive="active"
+              >{{route.title}}</a>
+            }
+
           <div class="flex items-center gap-x-2 py-2 sm:py-0 sm:ms-auto hs-tooltip [--trigger:hover]">
             <span class="hs-tooltip-toggle inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-blue-800/30 dark:text-blue-500">
                 <!-- <span class="size-1.5 inline-block rounded-full bg-blue-800 dark:bg-blue-500"></span> -->
@@ -28,7 +31,7 @@
               </span>
 
               <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-3 px-4 bg-white border text-sm text-gray-600 rounded-lg shadow-md dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400" role="tooltip">
-               en Desarrollo 💻
+               in Development 💻
               </span>
           </div>
 
