@@ -1,6 +1,6 @@
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive  } from '@angular/router';
 
 interface RouteHeader {
   id: number
@@ -19,7 +19,7 @@ interface RouteHeader {
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-
+  constructor(private router: Router){}
   rotesUrl: RouteHeader[] = [
     {
       id: 1,
@@ -39,8 +39,12 @@ export class HeaderComponent {
     {
       id: 4,
       title: 'Configuration',
-      url: '/env'
+      url: '/configuration'
     }
   ]
+
+  isActive(url: string): boolean {
+    return this.router.isActive(url, true);
+  }
 
 }

@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { FormTrainComponent } from './components/form-train/form-train.component';
-import { TableTrainComponent } from './components/table-train/table-train.component';
 import { HomeComponent } from './home/home.component';
 import { TrainingsComponent } from './trainings/trainings.component';
+import { CreateTrainingComponent } from './create-training/create-training.component';
+import { ConfigurationComponent } from './configuration/configuration.component';
 
 export const routes: Routes = [
     {
@@ -16,6 +15,14 @@ export const routes: Routes = [
     },
     {
         path: 'create',
-        component: FormTrainComponent
+        component: CreateTrainingComponent
+    },
+    {
+        path: 'configuration',
+        component: ConfigurationComponent
+    },
+    {
+        path: '**',
+        component: HomeComponent,
     }
 ];
