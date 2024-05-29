@@ -27,3 +27,16 @@ export interface TrainingResponse {
     data: Training | Training[]
     message?: string
 }
+
+export interface OpenAiModelsResponse {
+    success: boolean
+    data: ModelsOpenAI[]
+    message?: string
+}
+
+export interface ModelsOpenAI {
+    id: string
+    object: string
+    created: number
+    owned_by: string
+}
