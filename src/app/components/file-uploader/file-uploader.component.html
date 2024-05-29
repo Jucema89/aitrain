@@ -1,0 +1,51 @@
+
+
+<div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
+<div appDnd (fileDropped)="onFileDropped($event)" (dragoverStatus)="onDragOverStatus($event)" class="dropzone flex-col">
+  <p>Drag and drop files here or</p>
+  <button type="button" class="py-2 px-3 inline-flex items-center gap-x-1.5 text-sm font-medium rounded-lg border border-transparent text-gray-800 hover:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-800" (click)="buttonUpload()">
+    <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 size-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+    </svg>
+    
+    Click to Upload
+  </button>
+</div>
+@if (files.length > 0) {
+  <app-card-file-upload
+    [files]="files"
+    (removeAllFiles)="handlerRemove($event)">
+  </app-card-file-upload>
+}
+
+<div class="bg-gray-50 border-t border-gray-200 rounded-b-xl py-2 px-4 md:px-5 dark:bg-white/10 dark:border-neutral-700">
+  <div class="flex flex-wrap justify-between items-center gap-x-3">
+    <div>
+      <span class="text-sm font-semibold text-gray-800 dark:text-white">
+        {{ files.length }} Files
+      </span>
+    </div>
+    <!-- End Col -->
+
+    <div class="-me-2.5">
+      <button type="button" class="py-2 px-3 inline-flex items-center gap-x-1.5 text-sm font-medium rounded-lg border border-transparent text-gray-500 hover:bg-gray-200 hover:text-gray-800 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
+      (click)="files = []">
+        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18"></path>
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+          <line x1="10" x2="10" y1="11" y2="17"></line>
+          <line x1="14" x2="14" y1="11" y2="17"></line>
+        </svg>
+        Remove all Files
+      </button>
+    </div>
+    <!-- End Col -->
+  </div>
+</div>
+
+</div>
+<input type="file" name="file-input" id="one-file-upload" class="invisible" (change)="onFileSelected($event)">
+
+
+
