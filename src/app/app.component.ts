@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Event, NavigationEnd, Router, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { IStaticMethods } from 'preline/preline';
-import { HeaderComponent } from "./components/header/header.component";
-import { TableTrainComponent } from './components/table-train/table-train.component';
-import { FooterComponent } from "./components/footer/footer.component";
+import { HeaderComponent } from "./shared/components/header/header.component";
+import { TableTrainComponent } from './shared/components/table-train/table-train.component';
+import { FooterComponent } from "./shared/components/footer/footer.component";
 declare global {
   interface Window {
     HSStaticMethods: IStaticMethods;

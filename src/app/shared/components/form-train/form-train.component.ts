@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../services/api.service';
+import { ApiService } from '../../../services/api.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputComponent } from "../../shared/components/form/input/input.component";
-import { OptionsSelect } from '../../shared/components/form/form.interface';
+import { InputComponent } from "../form/input/input.component";
+import { OptionsSelect } from '../form/form.interface';
 
 @Component({
     selector: 'app-form-train',
