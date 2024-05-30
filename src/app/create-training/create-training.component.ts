@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { FormTrainComponent } from "../components/form-train/form-train.component";
-import { FileUploaderComponent } from "../components/file-uploader/file-uploader.component";
+import { FormTrainComponent } from "../shared/components/form-train/form-train.component";
+import { FileUploaderComponent } from "../shared/components/file-uploader/file-uploader.component";
 
 @Component({
     selector: 'app-create-training',

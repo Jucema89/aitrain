@@ -1,5 +1,5 @@
 import { Component, ViewChild, viewChild } from '@angular/core';
-import { DndDirective } from '../../directives/dragAndDrop.directive';
+import { DndDirective } from '../../../directives/dragAndDrop.directive';
 import { CardFileUploadComponent } from "../card-file-upload/card-file-upload.component";
 
 @Component({

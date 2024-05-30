@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TableTrainComponent } from "../components/table-train/table-train.component";
+import { TableTrainComponent } from "../shared/components/table-train/table-train.component";
 
 @Component({
     selector: 'app-trainings',

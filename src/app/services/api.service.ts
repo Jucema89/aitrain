@@ -10,6 +10,10 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
+  validateKeyOpenAI(apiKey: string):Observable<boolean>{
+    return this.http.post<{success: boolean, is_valid: boolean}>('/openai/validate-key/', { apiKey: apiKey }).pipe(map((res) => res.is_valid))
+  }
+
   //Training
   getTrainings(): Observable<Training[]>{
     return this.http.get<TrainingResponse>('/train/alls').pipe(map((res) => res.data as Training[]))
