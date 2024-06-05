@@ -1,0 +1,72 @@
+#snackbar {
+    visibility: hidden;
+    min-width: 50px;
+    // margin-left: -125px;
+    position: fixed;
+    z-index: 1;
+    left: 70vw;
+    bottom: 80%;
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+.show {
+    visibility: visible !important; /* Show the snackbar */
+
+/* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+However, delay the fade out process for 2.5 seconds */
+    //-webkit-animation: fadein 0.9s, fadeout 0.9s 3.9s;
+    animation: fadein 0.9s, fadeout 0.9s 3.9s;
+}
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {bottom: 60%; opacity: 0;}
+    to {bottom: 80%; opacity: 1;}
+    
+}
+
+@keyframes fadein {
+    from {bottom: 60%; opacity: 0;}
+    to {bottom: 80%; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 80%; opacity: 1;}
+    to {bottom: 60%; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 80%; opacity: 1;}
+    to {bottom: 60%; opacity: 0;}
+}
+
+
+@media (width <= 48em) {
+
+    #snackbar {
+        left:50%;
+        bottom: 80%;
+    }
+
+    /* Animations to fade the snackbar in and out */
+    @-webkit-keyframes fadein {
+        from {bottom: 40%; opacity: 0;}
+        to {bottom: 80%; opacity: 1;}
+        
+    }
+
+    @keyframes fadein {
+        from {bottom: 40%; opacity: 0;}
+        to {bottom: 80%; opacity: 1;}
+    }
+
+    @-webkit-keyframes fadeout {
+        from {bottom: 80%; opacity: 1;}
+        to {bottom: 40%; opacity: 0;}
+    }
+
+    @keyframes fadeout {
+        from {bottom: 80%; opacity: 1;}
+        to {bottom: 40%; opacity: 0;}
+    }
+        
+}

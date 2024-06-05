@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { ModelsOpenAI, OpenAiModelsResponse, Training, TrainingCreate, TrainingResponse } from '../interfaces/training.interface';
+import { Inject, Injectable } from '@angular/core';
+import { ModelsOpenAI, OpenAiModelsResponse, Training, TrainingCreate, TrainingResponse } from '../../interfaces/training.interface';
 import { map, Observable } from 'rxjs';
 
 @Injectable({
@@ -9,10 +9,6 @@ import { map, Observable } from 'rxjs';
 export class ApiService {
 
   constructor(private http: HttpClient) {}
-
-  validateKeyOpenAI(apiKey: string):Observable<boolean>{
-    return this.http.post<{success: boolean, is_valid: boolean}>('/openai/validate-key/', { apiKey: apiKey }).pipe(map((res) => res.is_valid))
-  }
 
   //Training
   getTrainings(): Observable<Training[]>{
@@ -36,9 +32,10 @@ export class ApiService {
   }
 
   //OpenAI
-  getModelsOpenAIAvailable(): Observable<ModelsOpenAI[]>{
-    const tokenOpenAI = String(localStorage.getItem('openAI_token'))
-    return this.http.post<OpenAiModelsResponse>('/openai/get-models', { apiKey: tokenOpenAI}).pipe(map(res => res.data))
+  getModelsOpenAIAvailable(apiKey: string): Observable<any[]>{
+    //const tokenOpenAI = String(localStorage.getItem('openAI_token'))
+    return this.http.post<any>('/openai/get-models', { apiKey: apiKey})
+    .pipe(map(res => res.data))
   }
 
   
