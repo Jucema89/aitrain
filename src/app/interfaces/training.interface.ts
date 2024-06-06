@@ -40,3 +40,15 @@ export interface ModelsOpenAI {
     created: number
     owned_by: string
 }
+
+export interface ConfigurationEnv {
+    openAiKey: string
+    postgresUrl: string
+    qdrantUrl: string
+    useAws: boolean
+    useVectorDatabase: boolean
+    awsKeyId: string
+    awsAccessKey: string
+    awsBucket: string
+    awsRegion: string
+}

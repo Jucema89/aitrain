@@ -9,7 +9,7 @@
         <!-- Card -->
         <div class="flex flex-col border rounded-xl p-4 sm:p-6 lg:p-10 dark:border-neutral-700">
           <h2 class="text-xl font-semibold text-gray-800 dark:text-neutral-200">
-            Keys Form
+            Environment Form
           </h2>
   
           <form [formGroup]="formConfig">
@@ -19,28 +19,30 @@
               [placeholder]="'xx-XXXxxXXxXXXXxXXXXXXX'"
               [formGroup]="formConfig"
               [control]="'openAiKey'"
+              [check]="checkValidationKey"
               [search]="awaitValidationKey"
               (clickSearch)="handlerSearch($event)">
             </app-search-component>
 
             <app-input
-                [control]="'postgresUrl'" 
-                [inputType]="'text'" 
-                [label]="'Postgres URL'"
-                [formGroup]="formConfig" 
-                [errorMessage]="'This Postgres Url is wrong'"
-              >
-              </app-input>
+              [control]="'postgresUrl'" 
+              [inputType]="'text'" 
+              [label]="'Postgres URL'"
+              [formGroup]="formConfig" 
+              [errorMessage]="'This Postgres Url is wrong'"
+            >
+            </app-input>
 
             <div class="mt-2 grid gap-4 lg:gap-6">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                 <app-input
-                  [control]="'qdrantUrl'" 
-                  [inputType]="'text'" 
-                  [label]="'Qdrant URL'"
-                  [type]="'text'" 
+                  [control]="'useVectorDatabase'" 
+                  [inputType]="'text'"
+                  [type]="'switch'"
+                  [label]="'Use Vector Database'"
+                  [tooltip]="'Vectors is result from yoor docs when transform using embeddings, this vectors can loaded into AI for create answer using this info.'"
                   [formGroup]="formConfig" 
-                  [errorMessage]="'This Qdrant url is wrong'"
+                  [errorMessage]="'This field is wrong'"
                 >
                 </app-input>
 
@@ -49,58 +51,73 @@
                   [inputType]="'text'"
                   [type]="'switch'"
                   [label]="'Use AWS Bucket'"
+                  [tooltip]="'S3 is a Service from AWS for storage documents and files into cloud.'"
                   [formGroup]="formConfig" 
                   [errorMessage]="'This field is wrong'"
                 >
               </app-input>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+              @if(this.formConfig.get('useVectorDatabase')?.value){
                 <app-input
-                  [control]="'awsKeyId'" 
-                  [inputType]="'text'" 
-                  [label]="'AWS Key Id'"
-                  [type]="'text'" 
-                  [formGroup]="formConfig" 
-                  [errorMessage]="'This Aws Key is wrong'"
-                >
-                </app-input>
+                [control]="'qdrantUrl'" 
+                [inputType]="'text'" 
+                [label]="'Qdrant URL'"
+                [type]="'text'" 
+                [formGroup]="formConfig" 
+                [errorMessage]="'This Qdrant url is wrong'"
+              >
+              </app-input>
+              }
+             
+              @if(this.formConfig.get('useAws')?.value){
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+                  <app-input
+                    [control]="'awsKeyId'" 
+                    [inputType]="'text'" 
+                    [label]="'AWS Key Id'"
+                    [type]="'text'" 
+                    [formGroup]="formConfig" 
+                    [errorMessage]="'This Aws Key is wrong'"
+                  >
+                  </app-input>
+  
+                  <app-input
+                    [control]="'awsAccessKey'" 
+                    [inputType]="'text'" 
+                    [label]="'AWS Access Key'"
+                    [type]="'text'" 
+                    [formGroup]="formConfig" 
+                    [errorMessage]="'This Aws Key is wrong'"
+                  >
+                  </app-input>
+  
+                </div>
 
-                <app-input
-                  [control]="'awsAccessKey'" 
-                  [inputType]="'text'" 
-                  [label]="'AWS Access Key'"
-                  [type]="'text'" 
-                  [formGroup]="formConfig" 
-                  [errorMessage]="'This Aws Key is wrong'"
-                >
-                </app-input>
-
-              </div>
-
-              <div class="grid grid-cols justify-end align-baseline justify-items-end sm:grid-cols-2 gap-4 lg:gap-6">
-                <app-input
-                  [control]="'awsBucket'" 
-                  [inputType]="'text'" 
-                  [label]="'AWS Bucket Name'"
-                  [type]="'text'" 
-                  [formGroup]="formConfig" 
-                  [errorMessage]="'This Aws Key is wrong'"
-                >
-                </app-input>
-
-                <app-input
-                  [control]="'awsRegion'" 
-                  [inputType]="'text'" 
-                  [label]="'AWS Bucket Region'"
-                  [type]="'text'" 
-                  [formGroup]="formConfig" 
-                  [errorMessage]="'This Aws Key is wrong'"
-                >
-                </app-input>
-
-              </div>
-
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
+                  <app-input
+                    [control]="'awsBucket'" 
+                    [inputType]="'text'" 
+                    [label]="'AWS Bucket Name'"
+                    [type]="'text'" 
+                    [formGroup]="formConfig" 
+                    [errorMessage]="'This Aws Key is wrong'"
+                  >
+                  </app-input>
+  
+                  <app-input
+                    [control]="'awsRegion'" 
+                    [inputType]="'text'" 
+                    [label]="'AWS Bucket Region'"
+                    [type]="'text'" 
+                    [formGroup]="formConfig" 
+                    [errorMessage]="'This Aws Key is wrong'"
+                  >
+                  </app-input>
+  
+                </div>
+              }
+              
               <!-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                 <app-input
                   [control]="'useAws'" 
@@ -138,9 +155,19 @@
           <!-- End Checkbox -->
   
           <div class="mt-6 grid">
-            <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
-              Save Configuration
-            </button>
+            @if(existEnvLocal){
+              <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" 
+              (click)="onsubmit()">
+                  Change Environment
+              </button>
+
+            }@else {
+              <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" 
+              [disabled]="formConfig.invalid" (click)="onsubmit()">
+                Save Configuration
+              </button>
+            }
+            
           </div>
   
           <!-- <div class="mt-3 text-center">

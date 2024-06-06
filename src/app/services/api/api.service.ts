@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ModelsOpenAI, OpenAiModelsResponse, Training, TrainingCreate, TrainingResponse } from '../../interfaces/training.interface';
 import { map, Observable } from 'rxjs';
+import { OpenAIModel } from '../../interfaces/openai.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +33,9 @@ export class ApiService {
   }
 
   //OpenAI
-  getModelsOpenAIAvailable(apiKey: string): Observable<any[]>{
-    //const tokenOpenAI = String(localStorage.getItem('openAI_token'))
-    return this.http.post<any>('/openai/get-models', { apiKey: apiKey})
-    .pipe(map(res => res.data))
+  getModelsOpenAIAvailable(apiKey: string): Observable<OpenAIModel[]>{
+    return this.http.post<{success: boolean, data: OpenAIModel[]}>('/openai/get-models', {apiKey})
+    .pipe(map(res => res.data.filter((model) => model.id.includes('gpt-'))))
   }
 
   

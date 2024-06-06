@@ -1,6 +1,6 @@
 import { inject } from "@angular/core";
-import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpHeaders, HttpRequest } from "@angular/common/http";
-import { catchError, Observable, throwError } from "rxjs";
+import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpHeaders, HttpRequest, HttpResponse } from "@angular/common/http";
+import { catchError, Observable, of, throwError } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { JsonObject, ResultObject } from "./app.interceptor.interface";
 import { NotificationService } from "../notification/notification.service";
@@ -44,6 +44,10 @@ function handleError(httpError: HttpErrorResponse, notification: NotificationSer
                 clase: 'error'
             })
         }
+
+        const response = new HttpResponse({ body: { success: false }})
+        return of( response )
+
     } else {
         //error http
         notification.open({
@@ -53,7 +57,9 @@ function handleError(httpError: HttpErrorResponse, notification: NotificationSer
         })
     }
     //console.error('❌ Error Interceptor = ', httpError)
-    return throwError(httpError)
+    //const errorSet = new Error(httpError.message)
+    const response = new HttpResponse({ body: { success: false }})
+    return of( response )
 }
 
 export function appInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
