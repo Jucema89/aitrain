@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ModelsOpenAI, OpenAiModelsResponse, Training, TrainingCreate, TrainingResponse } from '../../interfaces/training.interface';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { OpenAIModel } from '../../interfaces/openai.interfaces';
 
 @Injectable({
@@ -33,10 +33,19 @@ export class ApiService {
   }
 
   //OpenAI
-  getModelsOpenAIAvailable(apiKey: string): Observable<OpenAIModel[]>{
-    return this.http.post<{success: boolean, data: OpenAIModel[]}>('/openai/get-models', {apiKey})
-    .pipe(map(res => res.data.filter((model) => model.id.includes('gpt-'))))
+  getModelsOpenAIAvailable(apiKey: string): Observable<{ success: boolean, data: OpenAIModel[], message: string}>{
+    return this.http.post<{ success: boolean, data: OpenAIModel[], message: string}>('/openai/get-models', {apiKey})
+    .pipe(tap(res => res.data.filter((model) => model.id.includes('gpt-'))))
   }
+
+  validateBackend(url: string): Observable<{ success: true, data: { message: string }}> {
+    localStorage.setItem('backend_url', url)
+    return this.http.get<{ success: true, data: { message: string }}>(`/server/validate`).pipe(map((res) => res))
+  }
+  
+  // validatePostgres(url: string): Observable<{ message: string}>{
+  //   return this.http.get<{ success: true, data: { message: string }}>('/validate/backend').pipe(map((res) => res.data))
+  // }
 
   
 
