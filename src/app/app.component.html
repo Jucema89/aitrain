@@ -1,4 +1,5 @@
 <div id="main">
+    
     <app-header></app-header>
         <section class="overflow-y-auto
         [&::-webkit-scrollbar]:w-2
@@ -8,8 +9,10 @@
         [&::-webkit-scrollbar-thumb]:bg-gray-300
         dark:[&::-webkit-scrollbar-track]:bg-neutral-700
         dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-            <app-snackbar></app-snackbar>
-            <router-outlet></router-outlet>
+   
+            <router-outlet class="z-20">
+                <app-snackbar></app-snackbar>
+            </router-outlet>
         </section>
     <!-- <app-footer></app-footer> -->
 </div>
