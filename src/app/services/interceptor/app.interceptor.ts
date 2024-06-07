@@ -51,7 +51,7 @@ function handleError(httpError: HttpErrorResponse, notification: NotificationSer
     } else {
         //error http
         notification.open({
-            title: 'Error en Captcha',
+            title: 'Error en request to server',
             message: `${httpError.message}`,
             clase: 'alert'
         })

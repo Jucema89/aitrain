@@ -14,7 +14,7 @@ export class CardFileUploadComponent {
 
   /**
  * Transform bytes to Kb or Mb
- * @param size - size file in bytes.
+ * @param size - size file in bytes. 
  * @returns Strind with data in KB o MB.
  */
   formatFileSize(size: number): string {

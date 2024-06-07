@@ -1,114 +1,112 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api/api.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from "../form/input/input.component";
 import { OptionsSelect } from '../form/form.interface';
+import { LocalStorageService } from '../../../services/localStorage/localstorage.service';
+import { Router } from '@angular/router';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { Observable, of } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { TrainingCreate } from '../../../interfaces/training.interface';
 
 @Component({
     selector: 'app-form-train',
     standalone: true,
     templateUrl: './form-train.component.html',
     styleUrl: './form-train.component.scss',
-    imports: [InputComponent, ReactiveFormsModule ]
+    imports: [InputComponent, ReactiveFormsModule, AsyncPipe ]
 })
 export class FormTrainComponent implements OnInit {
+  @Input() filesTrain: File[] = []
 
-  apiKeyOpenAI: string = ''
-
-  formTrain: FormGroup = this.fb.group({
-    files: this.fb.array([]),
-    name: this.fb.control('', [Validators.required, Validators.minLength(3)]),
-    description: this.fb.control('', Validators.required),
-    modelGeneratorData: this.fb.control('', Validators.required),
-    DB_VectorName: this.fb.control(''),
-    openAiKey: this.fb.control('', [Validators.required, Validators.minLength(12)]),
-    useAws: this.fb.control(false),
-    //NotRequired
-    awsKeyId: this.fb.control(''),
-    awsAccessKey: this.fb.control(''),
-    awsBucket: this.fb.control(''),
-    awsRegion: this.fb.control(''),
-  })
-
-  optionsModelGenerator: OptionsSelect[] = [
+  formTrain: FormGroup = this.fb.group({})
+  optionsModelGenerator$: Observable<OptionsSelect[]> = of([])
+  optionsAnswer: OptionsSelect[] = [
     {
-      label: 'Gtp 3.5',
-      value: 'gpt-3.5-turbo-instruct'
+      label: 'Alls, IA define long text and Tokens',
+      value: 'alls'
+    },
+    {
+      label: 'Short Answers',
+      value: 'short'
+    },
+    {
+      label: 'Long and Explained answers',
+      value: 'long_explained'
     }
   ]
 
   constructor(
-    private apiService: ApiService,
     private fb: FormBuilder,
+    private router: Router,
+    private apiService: ApiService,
+    private localStorageService: LocalStorageService,
+    private notificationService: NotificationService
   ){}
 
   ngOnInit(): void {
-    this.getApiKey()
-
-    const name = this.formTrain.get('name')
-    const description = this.formTrain.get('description')
-    const modelGeneratorData = this.formTrain.get('modelGeneratorData')
-
-    name?.disable()
-    description?.disable()
-    modelGeneratorData?.disable()
-
-    this.inspectForm()
+    this.buildForm()
+    this.getModelsAvailables()
   }
 
-  getApiKey(){
-    let key = localStorage.getItem('openAI_token')
-    if(key && typeof(key) === 'string'){
-      this.apiKeyOpenAI = key
+  buildForm(){
+    this.formTrain = this.fb.group({
+      name: this.fb.control('', [Validators.required, Validators.minLength(3)]),
+      description: this.fb.control('', Validators.required),
+      modelGeneratorData: this.fb.control('', Validators.required),
+      type_answer: this.fb.control('alls')
+    })
+
+    this.formTrain.get('modelGeneratorData')?.disable()
+  }
+
+  async getModelsAvailables(){
+    const modelsResponse = await this.localStorageService.getModelsOpenai()
+   // this.optionsModelGenerator$ = of(modelsResponse.models)
+    console.log('models Response = ', modelsResponse)
+    if(modelsResponse.success && modelsResponse.models.length){
+
+      const arrayModels: OptionsSelect[] = []
+      modelsResponse.models.forEach((model) => {
+        arrayModels.push({
+          label: model.id,
+          value: model.id
+        })
+      })
+
+      this.optionsModelGenerator$ = of(arrayModels)
+      this.formTrain.get('modelGeneratorData')?.enable()
+      
+    } else {
+
+      this.notificationService.open({
+        title: `Environment not Exist`,
+        message: `You need to create your environment configuration to be able to train.`,
+        clase: 'error'
+      })
+
+      this.router.navigate(['/configuration'])
     }
   }
 
-  inspectForm(){
-    //AWS 
-    const awsKeyId = this.formTrain.get('awsKeyId')
-    const awsAccessKey = this.formTrain.get('awsAccessKey')
-    const awsBucket = this.formTrain.get('awsBucket')
-    const awsRegion = this.formTrain.get('awsRegion')
-    //form
-    const name = this.formTrain.get('name')
-    const description = this.formTrain.get('description')
-    const modelGeneratorData = this.formTrain.get('modelGeneratorData')
+  async onSubmit(){
+    if(this.formTrain.valid){
 
-    // name?.disable()
-    // description?.disable()
-    // modelGeneratorData?.disable()
+      const conf = await this.localStorageService.getConfiguration()
 
-    const openAiKey = this.formTrain.get('openAiKey')
-    openAiKey?.valueChanges.subscribe((key: string) => {
-      console.log('key = ', key)
-      if(openAiKey.valid){
-        name?.enable()
-        description?.enable()
-        modelGeneratorData?.enable()
-      } else {
-        name?.disable()
-        description?.disable()
-        modelGeneratorData?.disable()
+      const training: TrainingCreate = {
+        ...this.formTrain.value,
+        files: this.filesTrain,
+        environment: conf.env
       }
-    })
 
-    this.formTrain.get('useAws')?.valueChanges.subscribe((use: boolean) => {
-      if(use){
-        awsKeyId?.setValidators(Validators.required)
-        awsAccessKey?.setValidators(Validators.required)
-        awsBucket?.setValidators(Validators.required)
-        awsRegion?.setValidators(Validators.required)
-      } else {
-        awsKeyId?.clearValidators()
-        awsAccessKey?.clearValidators()
-        awsBucket?.clearValidators()
-        awsRegion?.clearValidators()
-      }
-    })
-  }
+      console.log('Training Data to Create = ', training)
 
-  onSubmit(){
-
+      this.apiService.createTrain(training).subscribe((res) => {
+        console.log('create training = ', res)
+      })
+    }
   }
 
 }

@@ -56,11 +56,11 @@ export class SnackbarComponent implements OnInit, OnDestroy {
 
   openSnackbar () {
     let snackBar: HTMLElement = document.getElementById('snackbar') as HTMLElement
-    snackBar.className = "show z-0";
+    snackBar.className = "show";
 
     setTimeout(() => { 
       snackBar.className = snackBar.className.replace('show', '')
-    }, 4000 );
+    }, 5000 );
   }
 
 }

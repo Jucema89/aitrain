@@ -40,9 +40,8 @@ export class ConfigurationComponent implements OnInit {
     this.formConfig = this.fb.group({
       openAiKey: this.fb.control('', [Validators.required, Validators.minLength(12)]),
       postgresUrl: this.fb.control('', [Validators.required, Validators.minLength(3), this.postgresUrlValidator]),
-      qdrantUrl: this.fb.control('', [Validators.minLength(3), this.qdrantUrlValidator]),
+      backendUrl: this.fb.control('http://localhost:3900', [Validators.required, Validators.minLength(3), this.backendUrlValidator]),
       useAws: this.fb.control(false),
-      useVectorDatabase: this.fb.control(false),
       //NotRequired
       awsKeyId: this.fb.control(''),
       awsAccessKey: this.fb.control(''),
@@ -73,7 +72,7 @@ export class ConfigurationComponent implements OnInit {
     return regex.test(control.value) ? null : { invalidPostgresUrl: true };
   }
 
-  qdrantUrlValidator(control: AbstractControl): ValidationErrors | null {
+  backendUrlValidator(control: AbstractControl): ValidationErrors | null {
     const regex = /^http:\/\/[a-zA-Z0-9.-]+:[0-9]+$/;
     return regex.test(control.value) ? null : { invalidQdrantUrl: true };
   }
@@ -84,7 +83,7 @@ export class ConfigurationComponent implements OnInit {
     .subscribe((res) => {
       console.log('res = ', res)
       if(res && res.length) {
-
+        this.modelsAvailable = res
         this.notificationService.open({
           title: `OpenAI Key Valid`,
           message: `You have access to ${res.length} Gpt models from OpenAI.`,
@@ -136,10 +135,12 @@ export class ConfigurationComponent implements OnInit {
 
 
   async onsubmit(){
-    console.log('onsubmit = ', this.formConfig)
     if(this.formConfig.valid && !this.existEnvLocal){
-      const saved = await this.localStorageService.setConfiguration(this.formConfig.value)
-      if(saved){
+
+      const savedConfig = await this.localStorageService.setConfiguration(this.formConfig.value)
+      const savedModels = await this.localStorageService.setModelsOpenai(this.modelsAvailable)
+
+      if(savedConfig && savedModels){
         this.notificationService.open({
           title: `Environment Saved`,
           message: `Your variables and secrets saved in this computer.`,

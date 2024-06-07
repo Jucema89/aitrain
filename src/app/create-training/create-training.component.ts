@@ -11,4 +11,9 @@ import { FileUploaderComponent } from "../shared/components/file-uploader/file-u
 })
 export class CreateTrainingComponent {
 
+    filesToTraining: File[] = []
+    
+    handlerFiles(files: File[]){
+        this.filesToTraining = files
+    }
 }

@@ -14,8 +14,8 @@
 
 /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
 However, delay the fade out process for 2.5 seconds */
-    //-webkit-animation: fadein 0.9s, fadeout 0.9s 3.9s;
-    animation: fadein 0.9s, fadeout 0.9s 3.9s;
+    -webkit-animation: fadein 0.9s, fadeout 0.9s 4.9s;
+    animation: fadein 0.9s, fadeout 0.9s 4.9s;
 }
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {

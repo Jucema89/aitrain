@@ -3,14 +3,15 @@ export interface Training {
     files: FileTraining[]
     name :string
     description :string           
-    modelGeneratorData :string          
-    DB_VectorName :string
+    modelGeneratorData :string
+    environment: ConfigurationEnv
+    type_answer: TypeAnswer
     createdAt :string             
     updatedAt :string  
 }
 
 export type TrainingCreate = Omit<Training, 'id'  | 'createdAt' | 'updatedAt'>;
-
+export type TypeAnswer = 'alls' | 'short' | 'long_explained'
 export interface FileTraining {
     id :string                
     registerId :string
