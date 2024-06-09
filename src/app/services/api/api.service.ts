@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ModelsOpenAI, OpenAiModelsResponse, Training, TrainingCreate, TrainingResponse } from '../../interfaces/training.interface';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { OpenAIModel } from '../../interfaces/openai.interfaces';
 
 @Injectable({
@@ -20,8 +20,31 @@ export class ApiService {
     return this.http.get<TrainingResponse>(`/train/one/${id}`).pipe(map((res) => res.data as Training))
   }
 
-  createTrain(payload: TrainingCreate): Observable<Training>{
-    return this.http.post<TrainingResponse>(`/train/create`, payload).pipe(map((res) => res.data as Training))
+  createTrain(payload: TrainingCreate): Promise<Training>{
+    return new Promise(async (result, reject) => {
+      try {
+        const headers = new Headers()
+        const formData = new FormData()
+        const apiUrl = localStorage.getItem('backend_url')
+
+        headers.append("Accept", "*/*");
+
+        formData.append('name', payload.name)
+        formData.append('description', payload.description)
+        formData.append('modelGeneratorData', payload.modelGeneratorData)
+        formData.append('openAiKey', payload.openAiKey)
+
+        payload.files.forEach(file => formData.append('files', file, file.name));
+        
+        const response = await fetch(`${apiUrl}/api/train/create`,
+          { method: 'POST', body: formData, headers: headers });
+        const data = await response.json();
+        result(data)
+        
+      } catch (error) {
+        console.log('error create Train FETCH = ', error);
+      }
+    })
   }
 
   updateTrain(payload: any): Observable<Training>{
@@ -33,10 +56,19 @@ export class ApiService {
   }
 
   //OpenAI
-  getModelsOpenAIAvailable(apiKey: string): Observable<OpenAIModel[]>{
-    return this.http.post<{success: boolean, data: OpenAIModel[]}>('/openai/get-models', {apiKey})
-    .pipe(map(res => res.data.filter((model) => model.id.includes('gpt-'))))
+  getModelsOpenAIAvailable(apiKey: string): Observable<{ success: boolean, data: OpenAIModel[], message: string}>{
+    return this.http.post<{ success: boolean, data: OpenAIModel[], message: string}>('/openai/get-models', {apiKey})
+    .pipe(tap(res => res.data.filter((model) => model.id.includes('gpt-'))))
   }
+
+  validateBackend(url: string): Observable<{ success: true, data: { message: string }}> {
+    localStorage.setItem('backend_url', url)
+    return this.http.get<{ success: true, data: { message: string }}>(`/server/validate`).pipe(map((res) => res))
+  }
+  
+  // validatePostgres(url: string): Observable<{ message: string}>{
+  //   return this.http.get<{ success: true, data: { message: string }}>('/validate/backend').pipe(map((res) => res.data))
+  // }
 
   
 

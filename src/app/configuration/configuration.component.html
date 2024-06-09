@@ -15,46 +15,30 @@
           <form [formGroup]="formConfig">
 
             <app-search-component
+              [label]="'Backend Url Connection'"
+              [placeholder]="'http://localhost:3900'"
+              [formGroup]="formConfig"
+              [control]="'backendUrl'"
+              [check]="checkValidationBackend"
+              [search]="awaitValidationBackend"
+              [errorMessage]="getErrorMessage(formConfig, 'backendUrl')"
+              (clickSearch)="handlerSearch($event)"
+              >
+            </app-search-component>
+
+            <app-search-component
               [label]="'Secret Key OpenAI'"
               [placeholder]="'xx-XXXxxXXxXXXXxXXXXXXX'"
               [formGroup]="formConfig"
               [control]="'openAiKey'"
               [check]="checkValidationKey"
               [search]="awaitValidationKey"
+              [errorMessage]="getErrorMessage(formConfig, 'openAiKey')"
               (clickSearch)="handlerSearch($event)">
             </app-search-component>
 
-            <app-input
-              [control]="'postgresUrl'" 
-              [inputType]="'text'" 
-              [label]="'Postgres URL'"
-              [formGroup]="formConfig" 
-              [errorMessage]="'This Postgres Url is wrong'"
-            >
-            </app-input>
-
-            <app-input
-              [control]="'backendUrl'" 
-              [inputType]="'text'" 
-              [label]="'Backend URL'"
-              [formGroup]="formConfig" 
-              [errorMessage]="'This Backend Url is wrong'"
-            >
-            </app-input>
-
             <div class="mt-2 grid gap-4 lg:gap-6">
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:gap-6">
-                <!-- <app-input
-                  [control]="'useVectorDatabase'" 
-                  [inputType]="'text'"
-                  [type]="'switch'"
-                  [label]="'Use Vector Database'"
-                  [tooltip]="'Vectors is result from yoor docs when transform using embeddings, this vectors can loaded into AI for create answer using this info.'"
-                  [formGroup]="formConfig" 
-                  [errorMessage]="'This field is wrong'"
-                >
-                </app-input> -->
-
                 <app-input
                   [control]="'useAws'" 
                   [inputType]="'text'"
@@ -126,28 +110,6 @@
   
                 </div>
               }
-              
-              <!-- <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-                <app-input
-                  [control]="'useAws'" 
-                  [inputType]="'text'"
-                  [type]="'switch'"
-                  [label]="'Use AWS Bucket'"
-                  [formGroup]="formConfig" 
-                  [errorMessage]="'This field is wrong'"
-                >
-                </app-input>
-
-                <app-input
-                  [control]="'awsKeyId'" 
-                  [inputType]="'text'" 
-                  [label]="'AWS Key Id'"
-                  [type]="'text'" 
-                  [formGroup]="formConfig" 
-                  [errorMessage]="'This Aws Key is wrong'"
-                >
-                </app-input>
-              </div> -->
             </div>
           </form>
           <!-- End Grid -->
@@ -179,11 +141,11 @@
             
           </div>
   
-          <!-- <div class="mt-3 text-center">
+          <div class="mt-3 text-center">
             <p class="text-sm text-gray-500 dark:text-neutral-500">
-              We'll get back to you in 1-2 business days.
+              This environment is saved in your local data.
             </p>
-          </div> -->
+          </div>
         </div>
         <!-- End Card -->
       </div>

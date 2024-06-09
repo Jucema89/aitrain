@@ -1,10 +1,10 @@
 export interface Training {
     id: string       
-    files: FileTraining[]
+    files: File[]
     name :string
     description :string           
     modelGeneratorData :string
-    environment: ConfigurationEnv
+    openAiKey: string
     type_answer: TypeAnswer
     createdAt :string             
     updatedAt :string  

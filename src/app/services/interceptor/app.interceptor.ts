@@ -6,9 +6,18 @@ import { JsonObject, ResultObject } from "./app.interceptor.interface";
 import { NotificationService } from "../notification/notification.service";
 
 function handleError(httpError: HttpErrorResponse, notification: NotificationService) {
+    console.log('errors  httpError = ', httpError)
+    //error connect with backend
+    if(httpError.message.includes('Http failure response for') && httpError.url){
+        const url: string[] = httpError.url?.split('/api/')
+        notification.open({
+            title: `Error in Backend Server`,
+            message: `this Url ${url[0]} is not valid for connect backend, verify that docker is running the container and that the ports are correct.`,
+            clase: 'error'
+        })
+    }
     //express validators response when propety is wrong in request
     const errors: ResultObject[] = transformObjectToArray(httpError.error.errors) 
-    console.log('errors = ', errors)
     if(errors.length){
         if(errors.length === 1){
             notification.open({
@@ -56,15 +65,14 @@ function handleError(httpError: HttpErrorResponse, notification: NotificationSer
             clase: 'alert'
         })
     }
-    //console.error('❌ Error Interceptor = ', httpError)
-    //const errorSet = new Error(httpError.message)
+
     const response = new HttpResponse({ body: { success: false }})
     return of( response )
 }
 
 export function appInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
 
-    const apiBaseUrl = environment.apiBaseUrl;
+    const apiBaseUrl = localStorage.getItem('backend_url') || '';
     const notification = inject(NotificationService)
 
     console.log(req.url);

@@ -93,19 +93,16 @@ export class FormTrainComponent implements OnInit {
   async onSubmit(){
     if(this.formTrain.valid){
 
-      const conf = await this.localStorageService.getConfiguration()
+      console.log('filesTrain = ', this.filesTrain)
 
       const training: TrainingCreate = {
         ...this.formTrain.value,
         files: this.filesTrain,
-        environment: conf.env
       }
 
-      console.log('Training Data to Create = ', training)
-
-      this.apiService.createTrain(training).subscribe((res) => {
-        console.log('create training = ', res)
-      })
+      const sendData = await this.apiService.createTrain(training)
+      console.log('train in componente response = ', sendData)
+ 
     }
   }
 
