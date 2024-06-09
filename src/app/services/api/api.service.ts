@@ -20,8 +20,31 @@ export class ApiService {
     return this.http.get<TrainingResponse>(`/train/one/${id}`).pipe(map((res) => res.data as Training))
   }
 
-  createTrain(payload: TrainingCreate): Observable<Training>{
-    return this.http.post<TrainingResponse>(`/train/create`, payload).pipe(map((res) => res.data as Training))
+  createTrain(payload: TrainingCreate): Promise<Training>{
+    return new Promise(async (result, reject) => {
+      try {
+        const headers = new Headers()
+        const formData = new FormData()
+        const apiUrl = localStorage.getItem('backend_url')
+
+        headers.append("Accept", "*/*");
+
+        formData.append('name', payload.name)
+        formData.append('description', payload.description)
+        formData.append('modelGeneratorData', payload.modelGeneratorData)
+        formData.append('openAiKey', payload.openAiKey)
+
+        payload.files.forEach(file => formData.append('files', file, file.name));
+        
+        const response = await fetch(`${apiUrl}/api/train/create`,
+          { method: 'POST', body: formData, headers: headers });
+        const data = await response.json();
+        result(data)
+        
+      } catch (error) {
+        console.log('error create Train FETCH = ', error);
+      }
+    })
   }
 
   updateTrain(payload: any): Observable<Training>{
