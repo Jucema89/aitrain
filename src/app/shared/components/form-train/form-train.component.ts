@@ -53,9 +53,9 @@ export class FormTrainComponent implements OnInit {
   buildForm(){
     this.formTrain = this.fb.group({
       name: this.fb.control('', [Validators.required, Validators.minLength(3)]),
-      description: this.fb.control('', Validators.required),
+      role_system: this.fb.control('', Validators.required),
       modelGeneratorData: this.fb.control('', Validators.required),
-      type_answer: this.fb.control('alls')
+      type_answer: this.fb.control('', Validators.required)
     })
 
     this.formTrain.get('modelGeneratorData')?.disable()
@@ -63,16 +63,21 @@ export class FormTrainComponent implements OnInit {
 
   async getModelsAvailables(){
     const modelsResponse = await this.localStorageService.getModelsOpenai()
-   // this.optionsModelGenerator$ = of(modelsResponse.models)
-    console.log('models Response = ', modelsResponse)
+  
     if(modelsResponse.success && modelsResponse.models.length){
 
       const arrayModels: OptionsSelect[] = []
       modelsResponse.models.forEach((model) => {
-        arrayModels.push({
-          label: model.id,
-          value: model.id
-        })
+        if( model.id.includes('gpt-') && 
+            !model.id.startsWith('ft:') && 
+            !model.id.includes('-instruct') && 
+            !model.id.includes('-vision') 
+          ){
+          arrayModels.push({
+            label: model.id,
+            value: model.id
+          })
+        }
       })
 
       this.optionsModelGenerator$ = of(arrayModels)
@@ -93,10 +98,13 @@ export class FormTrainComponent implements OnInit {
   async onSubmit(){
     if(this.formTrain.valid){
 
-      console.log('filesTrain = ', this.filesTrain)
+      console.log('this.formTrain.value = ', this.formTrain.value)
+      const config = (await this.localStorageService.getConfiguration()).env
+      
 
       const training: TrainingCreate = {
         ...this.formTrain.value,
+        openAiKey: config.openAiKey,
         files: this.filesTrain,
       }
 

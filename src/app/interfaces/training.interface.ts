@@ -2,7 +2,7 @@ export interface Training {
     id: string       
     files: File[]
     name :string
-    description :string           
+    role_system :string           
     modelGeneratorData :string
     openAiKey: string
     type_answer: TypeAnswer

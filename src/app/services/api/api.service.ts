@@ -30,7 +30,8 @@ export class ApiService {
         headers.append("Accept", "*/*");
 
         formData.append('name', payload.name)
-        formData.append('description', payload.description)
+        formData.append('role_system', payload.role_system)
+        formData.append('type_answer', payload.type_answer)
         formData.append('modelGeneratorData', payload.modelGeneratorData)
         formData.append('openAiKey', payload.openAiKey)
 
@@ -58,7 +59,6 @@ export class ApiService {
   //OpenAI
   getModelsOpenAIAvailable(apiKey: string): Observable<{ success: boolean, data: OpenAIModel[], message: string}>{
     return this.http.post<{ success: boolean, data: OpenAIModel[], message: string}>('/openai/get-models', {apiKey})
-    .pipe(tap(res => res.data.filter((model) => model.id.includes('gpt-'))))
   }
 
   validateBackend(url: string): Observable<{ success: true, data: { message: string }}> {
