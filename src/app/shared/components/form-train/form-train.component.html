@@ -44,12 +44,14 @@
 
 
           <app-input 
-            [control]="'description'" 
+            [control]="'role_system'" 
             [inputType]="'text'" 
-            [label]="'Description'"
-            [type]="'textarea'" 
-            [formGroup]="formTrain" 
-            [errorMessage]="'This description is wrong'">
+            [label]="'Rol para la IA'"
+            [type]="'textarea'"
+            [tooltip]="'Rol que debera tomar la IA al recibir el entrenamiento, decirle que es un vendedor, asesor, docente o cualquier rol que se requiera.'" 
+            [formGroup]="formTrain"
+            [placeholder]="'Eres un vendedor de seguros, asesoras personas y empresas sobre como asegurar sus posesiones y personas, eres atento  muy amable.'"
+            [errorMessage]="'Este Rol del Sistema esta mal'">
           </app-input>
 
           <div class="mt-6 grid">
