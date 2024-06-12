@@ -1,11 +1,13 @@
 <div class="max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8 lg:py-2 mx-auto">
     <div class="grid md:grid-cols-2 items-center gap-12">
         <app-file-uploader
-        (fileAdded)="handlerFiles($event)">
+        (fileAdded)="handlerFiles($event)"
+        [clearFiles]="clearFiles">
         </app-file-uploader>
       <div class="relative">
         <app-form-train
-        [filesTrain]="this.filesToTraining">
+        [filesTrain]="this.filesToTraining"
+        (clearForm)="handleClearForm($event)">
         </app-form-train>
       </div>
     </div>

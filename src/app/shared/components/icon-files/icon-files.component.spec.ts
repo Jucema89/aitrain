@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableRowComponent } from './table-row.component';
+import { IconFilesComponent } from './icon-files.component';
 
-describe('TableRowComponent', () => {
-  let component: TableRowComponent;
-  let fixture: ComponentFixture<TableRowComponent>;
+describe('IconFilesComponent', () => {
+  let component: IconFilesComponent;
+  let fixture: ComponentFixture<IconFilesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TableRowComponent]
+      imports: [IconFilesComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(TableRowComponent);
+    fixture = TestBed.createComponent(IconFilesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

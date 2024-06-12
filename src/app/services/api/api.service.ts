@@ -13,14 +13,15 @@ export class ApiService {
 
   //Training
   getTrainings(): Observable<Training[]>{
-    return this.http.get<TrainingResponse>('/train/alls').pipe(map((res) => res.data as Training[]))
+    return this.http.get<TrainingResponse>('/train/alls')
+    .pipe(map((res) => res.data as Training[]))
   }
 
   getOneTrain(id: string): Observable<Training>{
     return this.http.get<TrainingResponse>(`/train/one/${id}`).pipe(map((res) => res.data as Training))
   }
 
-  createTrain(payload: TrainingCreate): Promise<Training>{
+  createTrain(payload: TrainingCreate): Promise<TrainingResponse>{
     return new Promise(async (result, reject) => {
       try {
         const headers = new Headers()
@@ -35,7 +36,8 @@ export class ApiService {
         formData.append('modelGeneratorData', payload.modelGeneratorData)
         formData.append('openAiKey', payload.openAiKey)
 
-        payload.files.forEach(file => formData.append('files', file, file.name));
+        const filesUpload = payload.files as File[]
+        filesUpload.forEach(file => formData.append('files', file, file.name));
         
         const response = await fetch(`${apiUrl}/api/train/create`,
           { method: 'POST', body: formData, headers: headers });
@@ -65,11 +67,5 @@ export class ApiService {
     localStorage.setItem('backend_url', url)
     return this.http.get<{ success: true, data: { message: string }}>(`/server/validate`).pipe(map((res) => res))
   }
-  
-  // validatePostgres(url: string): Observable<{ message: string}>{
-  //   return this.http.get<{ success: true, data: { message: string }}>('/validate/backend').pipe(map((res) => res.data))
-  // }
-
-  
 
 }
