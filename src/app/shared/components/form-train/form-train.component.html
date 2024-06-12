@@ -4,7 +4,7 @@
       <div class="mt-5 p-4 relative bg-white border rounded-xl sm:mt-10 md:p-10 dark:bg-neutral-900 dark:border-neutral-700">
 
         <p class="text-2xl text-gray-800 pb-2 font-bold sm:text-2xl dark:text-white">
-          Training Form
+          Crear Archivos de Entrenamiento
         </p>
 
         <form [formGroup]="formTrain">
@@ -12,41 +12,42 @@
           <app-input 
             [control]="'modelGeneratorData'" 
             [inputType]="'text'" 
-            [label]="'AI model using for create File to Train'"
+            [label]="'Modelo de AI que generará los Documentos'"
             [tooltip]="'
-            For best results it is recommended to use the latest model or an Instruct model. It is not recommended to use models that are in Preview'"
+            Para mejores resultados recomendamos usar los Últimos modelos lanzados.'"
             [type]="'select'" 
             [formGroup]="formTrain"
             [selectOption]="(optionsModelGenerator$ | async) || []"
-            [errorMessage]="'This Model AI is wrong'">
+            [errorMessage]="'Este modelo de AI esta mal.'">
           </app-input>
-          <small class="text-gray-500">This model will create the training file that will then be used to train itself or another model.</small>
+          <small class="text-gray-500">Este modelo sera quien tomara tus documentos y creara los archivos <b>.jsonl</b> que despues podras usar para entrenar un modelo.</small>
           <app-input 
             [control]="'name'" 
-            [inputType]="'text'" 
-            [label]="'Name Training'"
+            [inputType]="'text'"
+            [placeholder]="'Bot de venta'"
+            [label]="'Nombre del Archivo a crear'"
             [type]="'text'" 
             [formGroup]="formTrain" 
-            [errorMessage]="'This name is wrong'">
+            [errorMessage]="'El Nombre esta mal'">
           </app-input>
 
           <app-input 
             [control]="'type_answer'" 
             [inputType]="'text'" 
-            [label]="'Type Answer'"
+            [label]="'Tipo de respuestas que deseas obtener'"
             [tooltip]="'
-            Depending on the type of responses in the training conversations, the model will respond after training.'"
+            Segun este tipo de respuesta el modelo aprendera como debe contestar, si sera mas explicativo o sera más corto en sus respuestas.'"
             [type]="'select'" 
             [formGroup]="formTrain"
             [selectOption]="optionsAnswer"
-            [errorMessage]="'This Type Answer is wrong'">
+            [errorMessage]="'El tipo de respuesta esta mal'">
           </app-input>
 
 
           <app-input 
             [control]="'role_system'" 
             [inputType]="'text'" 
-            [label]="'Rol para la IA'"
+            [label]="'Rol de Sistema para la IA'"
             [type]="'textarea'"
             [tooltip]="'Rol que debera tomar la IA al recibir el entrenamiento, decirle que es un vendedor, asesor, docente o cualquier rol que se requiera.'" 
             [formGroup]="formTrain"
@@ -57,7 +58,7 @@
           <div class="mt-6 grid">
             <button type="submit" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none" 
             [disabled]="formTrain.invalid || !formTrain.touched || !filesTrain.length" (click)="onSubmit()">
-              Start Trainig
+              Crear Archivos
             </button>
           </div>
         </form>

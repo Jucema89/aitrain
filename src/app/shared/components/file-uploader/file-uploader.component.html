@@ -2,14 +2,25 @@
 
 <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
 <div appDnd (fileDropped)="onFileDropped($event)" (dragoverStatus)="onDragOverStatus($event)" class="dropzone flex-col">
-  <p>Drag and drop files here or</p>
+  <p>Arrastra y suelta tus archivos aquí</p>
   <button type="button" class="py-2 px-3 inline-flex items-center gap-x-1.5 text-sm font-medium rounded-lg border border-transparent text-gray-800 hover:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none dark:text-white dark:hover:bg-neutral-800" (click)="buttonUpload()">
     <svg xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 size-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
     </svg>
     
-    Click to Upload
+    Click para subir
   </button>
+
+  <small class="py-2">
+    Se admiten solo los siguientes tipos de archivo:
+    <div class="flex flex-1 gap-2 py-2">
+      @for(ext of extensionValid; track ext){
+        <span class="inline-flex items-center gap-x-1 py-1 px-2 rounded-lg text-xs font-normal bg-blue-100 text-blue-800 dark:bg-blue-800/30 dark:text-blue-500">.{{ ext }}</span>
+      }
+    </div>
+    
+
+  </small>
 </div>
 @if (files.length > 0) {
   <app-card-file-upload
@@ -37,7 +48,7 @@
           <line x1="10" x2="10" y1="11" y2="17"></line>
           <line x1="14" x2="14" y1="11" y2="17"></line>
         </svg>
-        Remove all Files
+        Eliminar todos los archivos
       </button>
     </div>
     <!-- End Col -->

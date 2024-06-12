@@ -12,8 +12,14 @@ import { FileUploaderComponent } from "../shared/components/file-uploader/file-u
 export class CreateTrainingComponent {
 
     filesToTraining: File[] = []
+    clearFiles: boolean = false
     
     handlerFiles(files: File[]){
         this.filesToTraining = files
     }
+
+    handleClearForm(event: boolean){
+        this.clearFiles = event
+    }
+
 }

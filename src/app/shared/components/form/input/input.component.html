@@ -5,15 +5,17 @@
             [ngClass]="formGroup.get(control)?.disabled ? disabledLabel : normalLabel">
             {{ label }}
             @if(tooltip !== ''){
-                <span class="hs-tooltip-toggle">
+                <span class="hs-tooltip [--trigger:hover] sm:[--placement:right]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                     </svg>
                 </span>
-    
-                <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700" role="tooltip">
-                    {{ tooltip }}
-                </span>
+
+                <div class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible hidden opacity-0 transition-opacity absolute invisible z-10 max-w-xs w-full bg-blue-50 border border-gray-100 text-start rounded-xl shadow-md after:absolute after:top-0 after:-start-4 after:w-4 after:h-full dark:bg-neutral-800 dark:border-neutral-700" role="tooltip">
+                    <p class="inline-flex items-center gap-x-2 px-2 py-2 text-xs text-black disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white">
+                        {{ tooltip }}
+                    </p>
+                </div>
             }
         </label>
         <div [class]=" internLabel.length ? 'flex' : 'relative'" [formGroup]="formGroup">
@@ -56,15 +58,18 @@
             {{ label }}
 
             @if(tooltip !== ''){
-                <span class="hs-tooltip-toggle">
+                <span class="hs-tooltip [--trigger:hover] sm:[--placement:right]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                     </svg>
                 </span>
-    
-                <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700" role="tooltip">
-                    {{ tooltip }}
-                </span>
+
+                <div class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible hidden opacity-0 transition-opacity absolute invisible z-10 max-w-xs w-full bg-blue-50 border border-gray-100 text-start rounded-xl shadow-md after:absolute after:top-0 after:-start-4 after:w-4 after:h-full dark:bg-neutral-800 dark:border-neutral-700" role="tooltip">
+                    <p class="inline-flex items-center gap-x-2 px-2 py-2 text-xs text-black disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white">
+                        {{ tooltip }}
+                    </p>
+                </div>
+
             }
 
         </label>
@@ -74,14 +79,9 @@
                 [class]="this.setClassStyle(control)">
             </textarea>
 
-            <!-- <input [type]="inputType" [formControlName]="control" [placeholder]="placeholder"
-            [class]="this.setClassStyle(control)"> -->
-
             <div *ngIf="icon" class="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4">
-                <!-- <app-icon [class]="isInvalid(control) ? 'h-4 w-4 text-red-400' :'h-4 w-4 text-gray-400'" [name]="icon">
-                </app-icon> -->
             </div>
-
+            
             <div class="absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
                 <svg *ngIf="isInvalid(control)" class="h-4 w-4 text-red-500" width="16" height="16" fill="currentColor"
                     viewBox="0 0 16 16" aria-hidden="true">
@@ -103,15 +103,17 @@
             {{ label }}
 
             @if(tooltip !== ''){
-                <span class="hs-tooltip-toggle">
+                <span class="hs-tooltip [--trigger:hover] sm:[--placement:right]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                     </svg>
                 </span>
-    
-                <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700" role="tooltip">
-                    {{ tooltip }}
-                </span>
+
+                <div class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible hidden opacity-0 transition-opacity absolute invisible z-10 max-w-xs w-full bg-blue-50 border border-gray-100 text-start rounded-xl shadow-md after:absolute after:top-0 after:-start-4 after:w-4 after:h-full dark:bg-neutral-800 dark:border-neutral-700" role="tooltip">
+                    <p class="inline-flex items-center gap-x-2 px-2 py-2 text-xs text-black disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white">
+                        {{ tooltip }}
+                    </p>
+                </div>
             }
 
         </label>
@@ -144,15 +146,17 @@
             {{ label }}
 
             @if(tooltip !== ''){
-                <span class="hs-tooltip-toggle">
+                <span class="hs-tooltip [--trigger:hover] sm:[--placement:right]">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                     </svg>
                 </span>
     
-                <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700" role="tooltip">
-                    {{ tooltip }}
-                </span>
+                <div class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible hidden opacity-0 transition-opacity absolute invisible z-10 max-w-xs w-full bg-blue-50 border border-gray-100 text-start rounded-xl shadow-md after:absolute after:top-0 after:-start-4 after:w-4 after:h-full dark:bg-neutral-800 dark:border-neutral-700" role="tooltip">
+                    <p class="inline-flex items-center gap-x-2 px-2 py-2 text-xs text-black disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:text-white">
+                        {{ tooltip }}
+                    </p>
+                </div>
             }
 
         </label>

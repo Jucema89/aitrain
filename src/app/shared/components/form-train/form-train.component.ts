@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ApiService } from '../../../services/api/api.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from "../form/input/input.component";
@@ -19,6 +19,7 @@ import { TrainingCreate } from '../../../interfaces/training.interface';
 })
 export class FormTrainComponent implements OnInit {
   @Input() filesTrain: File[] = []
+  @Output() clearForm: EventEmitter<boolean> = new EventEmitter()
 
   formTrain: FormGroup = this.fb.group({})
   optionsModelGenerator$: Observable<OptionsSelect[]> = of([])
@@ -109,8 +110,17 @@ export class FormTrainComponent implements OnInit {
       }
 
       const sendData = await this.apiService.createTrain(training)
-      console.log('train in componente response = ', sendData)
- 
+
+      if(sendData.success){
+        this.notificationService.open({
+          title: `Guradado Exitoso.`,
+          message: `${sendData.message}`,
+          clase: 'success'
+        })
+
+        this.formTrain.reset()
+        this.clearForm.emit(true)
+      } 
     }
   }
 

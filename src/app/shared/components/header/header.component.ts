@@ -25,17 +25,17 @@ export class HeaderComponent {
   rotesUrl: RouteHeader[] = [
     {
       id: 1,
-      title: 'Home',
+      title: 'Inicio',
       url: '/'
     },
     {
       id: 2,
-      title: 'Trainings',
+      title: 'Lista de Docs',
       url: '/trainings'
     },
     {
       id: 3,
-      title: 'Create Training',
+      title: 'Crear Docs',
       url: '/create'
     },
     {

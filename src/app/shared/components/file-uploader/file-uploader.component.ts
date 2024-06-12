@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild, viewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, viewChild } from '@angular/core';
 import { DndDirective } from '../../../directives/dragAndDrop.directive';
 import { CardFileUploadComponent } from "../card-file-upload/card-file-upload.component";
 import { NotificationService } from '../../../services/notification/notification.service';
@@ -13,12 +13,20 @@ import { NotificationService } from '../../../services/notification/notification
         CardFileUploadComponent
     ]
 })
-export class FileUploaderComponent {
+export class FileUploaderComponent implements OnChanges {
   @Output() fileAdded: EventEmitter<File[]> = new EventEmitter()
+  @Input() clearFiles: boolean = false
 
   constructor(
     private notificationService: NotificationService
   ){}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changhes detected')
+    if(this.clearFiles){
+      this.files = []
+    }
+  }
   
   files: File[] = []
   extensionValid: string[] = [
@@ -30,7 +38,10 @@ export class FileUploaderComponent {
     console.log('Archivos arrastrados:', files)
     const arrayFiles = Array.from(files)
     const arrayFilesError: File[] = []
+    
     arrayFiles.forEach((file) => {
+
+      console.log('FILE dropped = ', file)
 
       if(this.iSvalidTypeFile(file.name)){
         this.files.push(file)
@@ -59,6 +70,8 @@ export class FileUploaderComponent {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
+
+      console.log('FILE selected = ', input.files[0])
       
       if(this.iSvalidTypeFile(input.files[0].name)){
         this.files.push(input.files[0])

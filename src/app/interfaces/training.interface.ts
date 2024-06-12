@@ -1,26 +1,30 @@
 export interface Training {
     id: string       
-    files: File[]
+    files: FileTraining[] | File[]
+    tokens_usage: number
     name :string
+    status: StatusFileTrain
     role_system :string           
     modelGeneratorData :string
     openAiKey: string
     type_answer: TypeAnswer
-    createdAt :string             
-    updatedAt :string  
+    observations: string
+    createdAt : Date             
+    updatedAt : Date  
 }
 
-export type TrainingCreate = Omit<Training, 'id'  | 'createdAt' | 'updatedAt'>;
+export type StatusFileTrain = 'start' | 'running' | 'finish' | 'cancel' | 'cancel_with_error'
+export type TrainingCreate = Omit<Training, 'id' | 'createdAt' | 'updatedAt'> 
 export type TypeAnswer = 'alls' | 'short' | 'long_explained'
 export interface FileTraining {
     id :string                
-    registerId :string
     fieldName :string
-    type: 'excel' | 'application' | 'pdf' | 'word' | 'image' | 'video' | 'audio' | 'presentation' | 'other'
+    extension: string
+    typeFileInTrain: 'base' | 'final'
     name :string
     link :string
-    createdAt :string             
-    updatedAt :string   
+    createdAt :Date             
+    updatedAt :Date   
 }
 
 export interface TrainingResponse {

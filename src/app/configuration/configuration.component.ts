@@ -57,6 +57,8 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
       awsBucket: this.fb.control(''),
       awsRegion: this.fb.control(''),
     })
+
+    this.formConfig.get('useAws')?.disable()
   }
 
   async validDataInStore(){
@@ -74,9 +76,14 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     }
   }
 
+  openAIkeyOLDValidator(control: AbstractControl): ValidationErrors | null {
+    const regex = /^sk-[a-zA-Z0-9]{45}$/;
+    return regex.test(control.value) ? null : { openAiKeyError: true };
+  }
+
   openAIkeyValidator(control: AbstractControl): ValidationErrors | null {
-    const regex = /^sk-[a-zA-Z0-9]{48}$/;
-    return regex.test(control.value) ? null : { invalidOpenAIkey: true };
+    const regex = /^sk-[a-zA-Z0-9]+-[a-zA-Z0-9]{48}$/;
+    return regex.test(control.value) ? null : { openAiKeyError: true };
   }
   
   backendUrlValidator(control: AbstractControl): ValidationErrors | null {
@@ -86,6 +93,7 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
 
   isKeyOpenAI(apiKey: string){
     this.awaitValidationKey = true
+    this.formConfig.get('openAiKey')?.setErrors(null)
     this.apiService.getModelsOpenAIAvailable(apiKey)
     .subscribe((res) => {
       console.log('res = ', res)
