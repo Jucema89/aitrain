@@ -121,5 +121,6 @@ export class TableTrainComponent implements OnInit {
   }
 
   downloadJsonl(id: string){
+    this.apiService.downloadFilesJsonl(id)
   }
 }

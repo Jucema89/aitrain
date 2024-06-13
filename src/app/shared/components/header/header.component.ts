@@ -7,6 +7,7 @@ interface RouteHeader {
   id: number
   title: string
   url: string
+  subroutes: RouteHeader[]
 }
 @Component({
     selector: 'app-header',
@@ -26,22 +27,52 @@ export class HeaderComponent {
     {
       id: 1,
       title: 'Inicio',
-      url: '/'
+      url: '/',
+      subroutes: []
     },
     {
       id: 2,
-      title: 'Lista de Docs',
-      url: '/trainings'
+      title: 'IA Training',
+      url: '',
+      subroutes: [
+        {
+          id: 2.1,
+          title: 'Crear Entrenamiento',
+          url: '/training/create',
+          subroutes: []
+        },
+        {
+          id: 2.2,
+          title: 'Tabla Entrenamientos',
+          url: '/training/list',
+          subroutes: []
+        },
+      ]
     },
     {
       id: 3,
-      title: 'Crear Docs',
-      url: '/create'
+      title: 'Docs Trainers',
+      url: '',
+      subroutes: [
+        {
+          id: 3.1,
+          title: 'Crear Docs',
+          url: '/docs/create',
+          subroutes: []
+        },
+        {
+          id: 3.2,
+          title: 'Tabla Docs',
+          url: '/docs/list',
+          subroutes: []
+        },
+      ]
     },
     {
       id: 4,
       title: 'Configuration',
-      url: '/configuration'
+      url: '/configuration',
+      subroutes: []
     }
   ]
 
