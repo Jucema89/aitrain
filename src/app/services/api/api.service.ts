@@ -68,4 +68,52 @@ export class ApiService {
     return this.http.get<{ success: true, data: { message: string }}>(`/server/validate`).pipe(map((res) => res))
   }
 
+  // downloadFilesJsonl(id: string): void{
+  //   this.http.get(`/files/download-jsonl/${id}`, { responseType: 'blob' }).pipe( map((response) => response)).subscribe((blob) => {
+  //     const url = window.URL.createObjectURL(blob);
+  //     // Crear un enlace y simular un click para descargar
+  //     const a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = `train.jsonl`; // El nombre del archivo para guardar
+  //     document.body.appendChild(a);
+  //     a.click();
+
+  //     // Limpiar después de descargar
+  //     window.URL.revokeObjectURL(url);
+  //     document.body.removeChild(a);
+  //   })
+  // }
+
+  downloadFilesJsonl(id: string): void {
+    this.http.get(`/files/download-jsonl/${id}`, { 
+      responseType: 'blob', 
+      observe: 'response'
+    }).pipe(
+      tap(response => {
+        const contentDisposition = response.headers.get('Content-Disposition') || ''
+        const matches = /filename="([^"]+)"/.exec(contentDisposition);
+        const filename = matches && matches[1] ? matches[1] : 'default-filename.jsonl';
+
+        const blob = response.body
+        if(blob){
+          const url = window.URL.createObjectURL(blob);
+
+          // Crear un enlace y simular un click para descargar
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+  
+          // Limpiar después de descargar
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        }
+       
+      })
+    ).subscribe((res) => {
+      console.log('download = ', res)
+    });
+  }
+
 }

@@ -10,8 +10,30 @@ export const routes: Routes = [
         component: HomeComponent,
     },
     {
-        path: 'trainings',
-        component: TrainingsComponent
+        path: 'docs',
+        children: [
+            {
+                path: 'list',
+                component: TrainingsComponent,
+            },
+            {
+                path: 'create',
+                component: CreateTrainingComponent,
+            }
+        ]
+    },
+    {
+        path: 'training',
+        children: [
+            {
+                path: 'list',
+                component: TrainingsComponent,
+            },
+            {
+                path: 'create',
+                component: CreateTrainingComponent,
+            }
+        ]
     },
     {
         path: 'create',

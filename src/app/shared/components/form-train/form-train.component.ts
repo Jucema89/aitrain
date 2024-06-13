@@ -25,15 +25,15 @@ export class FormTrainComponent implements OnInit {
   optionsModelGenerator$: Observable<OptionsSelect[]> = of([])
   optionsAnswer: OptionsSelect[] = [
     {
-      label: 'Alls, IA define long text and Tokens',
+      label: 'Todas: La IA define longitud y tokens de respuestas.',
       value: 'alls'
     },
     {
-      label: 'Short Answers',
+      label: 'Cortas: respuestas reducidas y concisas.',
       value: 'short'
     },
     {
-      label: 'Long and Explained answers',
+      label: 'Largas: respuestas amplias y bien explicadas.',
       value: 'long_explained'
     }
   ]
@@ -87,8 +87,8 @@ export class FormTrainComponent implements OnInit {
     } else {
 
       this.notificationService.open({
-        title: `Environment not Exist`,
-        message: `You need to create your environment configuration to be able to train.`,
+        title: `Configuraciones no Existen`,
+        message: `Necesitas agregar tus variables de configuración para comenzar a entrenar.`,
         clase: 'error'
       })
 
