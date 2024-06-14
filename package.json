@@ -8,6 +8,7 @@
     "devBuild": "npm run config && ng build --configuration develop",
     "prodBuild": "npm run config && ng build --configuration production",
     "watch": "ng build --watch --configuration development",
+    "config": "ts-node set-env.ts",
     "test": "ng test"
   },
   "private": true,
