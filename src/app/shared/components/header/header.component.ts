@@ -70,6 +70,12 @@ export class HeaderComponent {
     },
     {
       id: 4,
+      title: 'Chat',
+      url: '/chat',
+      subroutes: []
+    },
+    {
+      id: 5,
       title: 'Configuration',
       url: '/configuration',
       subroutes: []

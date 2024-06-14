@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { ModelsOpenAI, OpenAiModelsResponse, Training, TrainingCreate, TrainingResponse } from '../../interfaces/training.interface';
 import { map, Observable, tap } from 'rxjs';
-import { OpenAIModel } from '../../interfaces/openai.interfaces';
+import { OpenAICreateFientuning, OpenaiFinetuningCreated, OpenaiFinetuningListResponse, OpenaiFinetuningResponse, OpenAIModel } from '../../interfaces/openai.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +58,7 @@ export class ApiService {
     return this.http.delete<TrainingResponse>(`/train/delete/${id}`).pipe(map((res) => res.success))
   }
 
-  //OpenAI
+  //OpenAI for Training Docs
   getModelsOpenAIAvailable(apiKey: string): Observable<{ success: boolean, data: OpenAIModel[], message: string}>{
     return this.http.post<{ success: boolean, data: OpenAIModel[], message: string}>('/openai/get-models', {apiKey})
   }
@@ -68,52 +68,30 @@ export class ApiService {
     return this.http.get<{ success: true, data: { message: string }}>(`/server/validate`).pipe(map((res) => res))
   }
 
-  // downloadFilesJsonl(id: string): void{
-  //   this.http.get(`/files/download-jsonl/${id}`, { responseType: 'blob' }).pipe( map((response) => response)).subscribe((blob) => {
-  //     const url = window.URL.createObjectURL(blob);
-  //     // Crear un enlace y simular un click para descargar
-  //     const a = document.createElement('a');
-  //     a.href = url;
-  //     a.download = `train.jsonl`; // El nombre del archivo para guardar
-  //     document.body.appendChild(a);
-  //     a.click();
+  downloadFilesJsonl(id: string): void{
+    this.http.get(`/files/download-jsonl/${id}`, { responseType: 'blob' }).pipe( map((response) => response)).subscribe((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `files_training_${id}.zip`;
+      document.body.appendChild(a);
+      a.click();
 
-  //     // Limpiar después de descargar
-  //     window.URL.revokeObjectURL(url);
-  //     document.body.removeChild(a);
-  //   })
-  // }
-
-  downloadFilesJsonl(id: string): void {
-    this.http.get(`/files/download-jsonl/${id}`, { 
-      responseType: 'blob', 
-      observe: 'response'
-    }).pipe(
-      tap(response => {
-        const contentDisposition = response.headers.get('Content-Disposition') || ''
-        const matches = /filename="([^"]+)"/.exec(contentDisposition);
-        const filename = matches && matches[1] ? matches[1] : 'default-filename.jsonl';
-
-        const blob = response.body
-        if(blob){
-          const url = window.URL.createObjectURL(blob);
-
-          // Crear un enlace y simular un click para descargar
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-  
-          // Limpiar después de descargar
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-        }
-       
-      })
-    ).subscribe((res) => {
-      console.log('download = ', res)
-    });
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    })
   }
 
+  //OpenAI for Finetuning
+  createFinetuning(payload: OpenAICreateFientuning):Observable<OpenaiFinetuningResponse>{
+    return this.http.post<OpenaiFinetuningResponse>('/openai/finetuning/create/', payload)
+  }
+
+  getAllfinetunings(apiKey: string): Observable<OpenaiFinetuningListResponse>{
+    return this.http.get<OpenaiFinetuningListResponse>(`/openai/finetuning/alls/${apiKey}`)
+  }
+
+  getOnefinetuning(apiKey: string, id: string){
+    return this.http.get(`/openai/finetuning/alls/${apiKey}/${id}`)
+  }
 }

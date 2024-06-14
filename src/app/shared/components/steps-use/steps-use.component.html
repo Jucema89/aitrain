@@ -1,19 +1,62 @@
 
 <!-- Approach -->
-<div class="bg-gradient-to-tl from-[#5E17D8] via-[#2574eb] to-[#5E17D8]">
+<div class="bg-gray-50">
     <!-- Approach -->
-    <div class="max-w-5xl px-4 xl:px-0 py-10 lg:pt-20 lg:pb-20 mx-auto">
+    <div class="max-w-[75vw] px-4 xl:px-0 py-10 lg:pt-20 lg:pb-20 mx-auto">
       <!-- Title -->
       <div class="max-w-3xl mb-10 lg:mb-14">
-        <h2 class="text-white font-semibold text-2xl md:text-4xl md:leading-tight">Our approach</h2>
-        <p class="mt-1 text-white">This profound insight guides our comprehensive strategy — from meticulous research and strategic planning to the seamless execution of brand development and website or product deployment.</p>
+        <h2 class="text-black font-bold text-3xl md:text-4xl md:leading-tight">
+          <span class="bg-clip-text bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8] text-transparent">
+            Personaliza la IA 
+          </span>
+          en 4 pasos
+        </h2>
+        <p class=" text-black">
+          Aitrain esta diseñado para que uses esta web conectada a un backend local corriendo en tu computadora. Usamos Docker para esto, asi que si no lo tienes deberas descargarlo.
+          <a class="px-1 inline-flex items-center gap-2 border-b-2 border-transparent text-sm font-medium whitespace-nowrap text-blue-500 hover:text-blue-700 focus:outline-none focus:text-blue-700 dark:text-neutral-500 dark:hover:text-blue-500" href="https://www.docker.com/products/docker-desktop/" target="_blank">
+            <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M349.9 236.3h-66.1v-59.4h66.1v59.4zm0-204.3h-66.1v60.7h66.1V32zm78.2 144.8H362v59.4h66.1v-59.4zm-156.3-72.1h-66.1v60.1h66.1v-60.1zm78.1 0h-66.1v60.1h66.1v-60.1zm276.8 100c-14.4-9.7-47.6-13.2-73.1-8.4-3.3-24-16.7-44.9-41.1-63.7l-14-9.3-9.3 14c-18.4 27.8-23.4 73.6-3.7 103.8-8.7 4.7-25.8 11.1-48.4 10.7H2.4c-8.7 50.8 5.8 116.8 44 162.1 37.1 43.9 92.7 66.2 165.4 66.2 157.4 0 273.9-72.5 328.4-204.2 21.4 .4 67.6 .1 91.3-45.2 1.5-2.5 6.6-13.2 8.5-17.1l-13.3-8.9zm-511.1-27.9h-66v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm78.1 0h-66.1v59.4h66.1v-59.4zm-78.1-72.1h-66.1v60.1h66.1v-60.1z" fill="currentColor"/></svg>
+            Descargar Docker
+          </a>
+        </p>
       </div>
       <!-- End Title -->
   
       <!-- Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 lg:items-center">
-        <div class="aspect-w-16 aspect-h-9 lg:aspect-none">
-          <img class="w-full object-cover rounded-xl" src="https://images.unsplash.com/photo-1587614203976-365c74645e83?q=80&w=480&h=600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image Description">
+        <div class="w-full lg:aspect-none">
+          <!-- <img class="w-full object-cover rounded-xl" src="https://images.unsplash.com/photo-1587614203976-365c74645e83?q=80&w=480&h=600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image Description"> -->
+          <div class="flex justify-end py-4 px-4 w-full text-base leading-relaxed text-blue-400 bg-indigo-900 rounded-lg shadow-lg xl:text-lg xl:pr-2">
+          <pre class="text-sm">
+            <span class="text-blue-100">##docker-compose.yml</span>
+            version: '3.8'
+            services:
+
+              db:
+                image: postgres
+                environment:
+                  POSTGRES_DB: aitrain
+                  POSTGRES_USER: postgres
+                  POSTGRES_PASSWORD: aitrainPass
+                ports:
+                  - "6432:5432"
+                volumes:
+                  - postgres_data:/var/lib/postgresql/data
+
+              app:
+                image: juliodaza/aitrain-backend:latest
+                ports:
+                  - "3900:3900"
+                environment:
+                  DATABASE_URL: "postgresql://postgres:aitrainPass&#64;db:5432/aitrain"
+                depends_on:
+                  - db
+
+            volumes:
+              postgres_data:
+
+          </pre>
+        </div>
+
         </div>
         <!-- End Col -->
   
@@ -21,8 +64,8 @@
         <div>
           <!-- Heading -->
           <div class="mb-4">
-            <h3 class="text-white text-xs font-medium uppercase">
-              Steps
+            <h3 class="text-black text-xs font-medium uppercase">
+              Pasos
             </h3>
           </div>
           <!-- End Heading -->
@@ -30,9 +73,9 @@
           <!-- Item -->
           <div class="flex gap-x-5 ms-1">
             <!-- Icon -->
-            <div class="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
+            <div class="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8]">
               <div class="relative z-10 size-8 flex justify-center items-center">
-                <span class="flex flex-shrink-0 justify-center items-center size-8 border border-neutral-800 text-white font-semibold text-xs uppercase rounded-full">
+                <span class="flex flex-shrink-0 justify-center items-center size-8 border bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8] border-transparent text-white font-semibold text-xs uppercase rounded-full">
                   1
                 </span>
               </div>
@@ -41,9 +84,9 @@
   
             <!-- Right Content -->
             <div class="grow pt-0.5 pb-8 sm:pb-12">
-              <p class="text-sm lg:text-base text-neutral-400">
-                <span class="text-white">Market Research and Analysis:</span>
-                Identify your target audience and understand their needs, preferences, and behaviors.
+              <p class="text-sm lg:text-base text-black">
+                <span class="text-black font-bold">Copia el docker compose y ejecutalo:</span>
+                Con el archivo se bajara la ultima imagen de aitrain-backend y se crearan dos servicios: uno con la base de datos de Postgres y la otra con el backend de Node.
               </p>
             </div>
             <!-- End Right Content -->
@@ -53,9 +96,9 @@
           <!-- Item -->
           <div class="flex gap-x-5 ms-1">
             <!-- Icon -->
-            <div class="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
+            <div class="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8]">
               <div class="relative z-10 size-8 flex justify-center items-center">
-                <span class="flex flex-shrink-0 justify-center items-center size-8 border border-neutral-800 text-white font-semibold text-xs uppercase rounded-full">
+                <span class="flex flex-shrink-0 justify-center items-center size-8 border bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8] border-transparent text-white font-semibold text-xs uppercase rounded-full">
                   2
                 </span>
               </div>
@@ -64,9 +107,9 @@
   
             <!-- Right Content -->
             <div class="grow pt-0.5 pb-8 sm:pb-12">
-              <p class="text-sm lg:text-base text-neutral-400">
-                <span class="text-white">Product Development and Testing:</span>
-                Develop digital products or services that address the needs and preferences of your target audience.
+              <p class="text-sm lg:text-base text-black">
+                <span class="text-black font-bold">Configura el entorno:</span>
+                En esta web ve a configuracion y agrega la URL de backend y la key de OpenAI. Si no modificaste nada el backend corre en <small class="text-gray-900 text-xs font-normal px-2 py-1 rounded-lg bg-gray-300">http://localhost:3900</small>
               </p>
             </div>
             <!-- End Right Content -->
@@ -76,9 +119,9 @@
           <!-- Item -->
           <div class="flex gap-x-5 ms-1">
             <!-- Icon -->
-            <div class="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
+            <div class="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8]">
               <div class="relative z-10 size-8 flex justify-center items-center">
-                <span class="flex flex-shrink-0 justify-center items-center size-8 border border-neutral-800 text-white font-semibold text-xs uppercase rounded-full">
+                <span class="flex flex-shrink-0 justify-center items-center size-8 border bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8] border-transparent text-white font-semibold text-xs uppercase rounded-full">
                   3
                 </span>
               </div>
@@ -87,9 +130,9 @@
   
             <!-- Right Content -->
             <div class="grow pt-0.5 pb-8 sm:pb-12">
-              <p class="text-sm md:text-base text-neutral-400">
-                <span class="text-white">Marketing and Promotion:</span>
-                Develop a comprehensive marketing strategy to promote your digital products or services.
+              <p class="text-sm md:text-base text-black">
+                <span class="text-black font-bold">Crea Doc Trainers:</span>
+                Ve a Doc Trainers y en crear docs sube los archivos que usaras de base para entrenamieno, llena el formulario y AItrain generará los archivos <small class="text-gray-900 text-xs font-normal px-2 py-1 rounded-lg bg-gray-300">.jsonl</small> para entrenar la IA.
               </p>
             </div>
             <!-- End Right Content -->
@@ -99,9 +142,9 @@
           <!-- Item -->
           <div class="flex gap-x-5 ms-1">
             <!-- Icon -->
-            <div class="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-neutral-800">
+            <div class="relative last:after:hidden after:absolute after:top-8 after:bottom-0 after:start-4 after:w-px after:-translate-x-[0.5px] after:bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8]">
               <div class="relative z-10 size-8 flex justify-center items-center">
-                <span class="flex flex-shrink-0 justify-center items-center size-8 border border-neutral-800 text-white font-semibold text-xs uppercase rounded-full">
+                <span class="flex flex-shrink-0 justify-center items-center size-8 border bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8] border-transparent text-white font-semibold text-xs uppercase rounded-full">
                   4
                 </span>
               </div>
@@ -110,19 +153,43 @@
   
             <!-- Right Content -->
             <div class="grow pt-0.5 pb-8 sm:pb-12">
-              <p class="text-sm md:text-base text-neutral-400">
-                <span class="text-white">Launch and Optimization:</span>
-                Launch your digital products or services to the market, closely monitoring their performance and user feedback.
+              <p class="text-sm md:text-base text-black">
+                <span class="text-black font-bold">Entrena tu Modelo:</span>
+                en IA Train crea un nuevo entrenamiento usando los docs de entrenamiento, espera unos minutos y ya tendras un Modelo personalizado con tus datos.
               </p>
             </div>
             <!-- End Right Content -->
           </div>
           <!-- End Item -->
+          <small class="flex text-gray-500 justify-start py-2 px-4">Tu modelo personalizado</small>
+          <div class="inline-flex flex-nowrap items-center bg-white border border-gray-200 rounded-full p-1.5 pe-3 dark:bg-neutral-900 dark:border-neutral-700">
+            <span class="inline-flex items-center justify-center size-6 rounded-full bg-black dark:bg-neutral-700">
+              <svg class="flex-shrink-0 size-4 text-white" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.499 7Z" fill="currentColor"/></svg>
+    
+            </span>
+            <div class="whitespace-nowrap px-2 text-sm font-medium text-gray-800 dark:text-white">
+              ft:gpt-3.5-turbo-0125:personal:mimodelo:AB123
+            </div>
+          </div>
+
+
+          <!-- <div class="space-y-2 justify-center justify-items-center text-center items-center">
+            <small class="flex text-gray-500 justify-center">Previsualización</small>
+            <div class="inline-flex flex-nowrap items-center bg-white border border-gray-200 rounded-full p-1.5 pe-3 dark:bg-neutral-900 dark:border-neutral-700">
+              <span class="inline-flex items-center justify-center size-6 rounded-full bg-black dark:bg-neutral-700">
+                <svg class="flex-shrink-0 size-4 text-white" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.499 7Z" fill="currentColor"/></svg>
+      
+              </span>
+              <div class="whitespace-nowrap px-2 text-sm font-medium text-gray-800 dark:text-white">
+                ft:gpt-3.5-turbo-0125:personal:mimodelo:AB123
+              </div>
+            </div>
+          </div> -->
   
-          <a class="group inline-flex items-center gap-x-2 py-2 px-3 bg-white font-medium text-sm text-[#5E17D8] rounded-full focus:outline-none" href="#">
+          <!-- <a class="group inline-flex items-center gap-x-2 py-2 px-3 bg-white font-medium text-sm text-[#5E17D8] rounded-full focus:outline-none" href="#">
             <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path><path class="opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-hover:delay-100 transition" d="M14.05 2a9 9 0 0 1 8 7.94"></path><path class="opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition" d="M14.05 6A5 5 0 0 1 18 10"></path></svg>
             Schedule a call
-          </a>
+          </a> -->
         </div>
         <!-- End Timeline -->
       </div>
