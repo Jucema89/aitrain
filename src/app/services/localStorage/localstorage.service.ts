@@ -7,7 +7,6 @@ import { ConfigurationEnv, ModelsOpenAI } from "../../interfaces/training.interf
   export class LocalStorageService {
 
     setConfiguration(config: ConfigurationEnv): Promise<boolean> {
-        console.log('conf service = ', config)
         return new Promise((result, reject) => {
             try {
                 const stingData = JSON.stringify(config)

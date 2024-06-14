@@ -24,6 +24,7 @@ export class FormTrainAIComponent implements OnInit {
   optionsDocsTrainingAnswer: OptionsSelect[] = []
   showNameExpected: boolean = false
   loadingButton: boolean = false
+  messageNeedConfig: boolean = true
 
   constructor(
     private fb: FormBuilder,
@@ -65,7 +66,7 @@ export class FormTrainAIComponent implements OnInit {
     const modelsResponse = await this.localStorageService.getModelsOpenai()
   
     if(modelsResponse.success && modelsResponse.models.length){
-
+      this.messageNeedConfig = false
       const arrayModels: OptionsSelect[] = []
       modelsResponse.models.forEach((model) => {
         if( model.id.includes('gpt-3') && 
@@ -84,14 +85,15 @@ export class FormTrainAIComponent implements OnInit {
       this.formTrainAI.get('modelGeneratorData')?.enable()
       
     } else {
+      this.messageNeedConfig = true
+      this.formTrainAI.disable()
+      // this.notificationService.open({
+      //   title: `Configuraciones no Existen`,
+      //   message: `Necesitas agregar tus variables de configuración para comenzar a entrenar.`,
+      //   clase: 'error'
+      // })
 
-      this.notificationService.open({
-        title: `Configuraciones no Existen`,
-        message: `Necesitas agregar tus variables de configuración para comenzar a entrenar.`,
-        clase: 'error'
-      })
-
-      this.router.navigate(['/configuration'])
+      // this.router.navigate(['/configuration'])
     }
   }
 
@@ -114,7 +116,6 @@ export class FormTrainAIComponent implements OnInit {
   async onSubmit(){
     if(this.formTrainAI.valid){
       this.loadingButton = true
-      console.log('this.formTrain.value = ', this.formTrainAI.value)
       const config = (await this.localStorageService.getConfiguration()).env
 
       this.apiService.createFinetuning({

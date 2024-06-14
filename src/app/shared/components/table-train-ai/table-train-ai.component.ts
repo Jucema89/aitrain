@@ -8,7 +8,6 @@ import { NotificationService } from '../../../services/notification/notification
 import { LocalStorageService } from '../../../services/localStorage/localstorage.service';
 import { FinetunedStatus, OpenAiFinetuned } from '../../../interfaces/openai.interfaces';
 import { Router, RouterLink } from '@angular/router';
-
 declare global {
   interface Window {
     HSStaticMethods: IStaticMethods;
@@ -23,9 +22,7 @@ declare global {
     imports: [CommonModule, RouterLink, BadgeStatusComponent, IconFilesComponent]
 })
 export class TableTrainAIComponent implements OnInit {
-  
   finetunings: OpenAiFinetuned[] = []
-  //idToRemove: string = ''
   lodingRow: boolean = true
 
   tableHeader: string[] = [
@@ -37,11 +34,11 @@ export class TableTrainAIComponent implements OnInit {
     'Creado',
     ''
   ]
+  messageNeedConfig: boolean = true
 
   constructor(
     private apiService: ApiService,
     private localStorageService: LocalStorageService,
-    private router: Router
   ){}
   
   ngOnInit(): void {
@@ -54,18 +51,21 @@ export class TableTrainAIComponent implements OnInit {
 
 
   async getTrains(){
-    const config = (await this.localStorageService.getConfiguration()).env
+    const config = (await this.localStorageService.getConfiguration())
 
-    console.log('environments = ', config)
-
-    this.apiService.getAllfinetunings(config.openAiKey).subscribe((finetunings) => {
-      console.log('models finetunnnig = ', finetunings)
-      this.finetunings = finetunings.data
-      this.lodingRow = false
-      setTimeout(() => {
-        window.HSStaticMethods.autoInit();
-      }, 100);
-    })
+    if(config.success){
+      this.messageNeedConfig = false
+      this.apiService.getAllfinetunings(config.env.openAiKey).subscribe((finetunings) => {
+        this.finetunings = finetunings.data
+        this.lodingRow = false
+        setTimeout(() => {
+          window.HSStaticMethods.autoInit();
+        }, 100);
+      })
+    } else {
+      this.messageNeedConfig = true
+    }
+    
   }
 
   getFiles(finetuned: OpenAiFinetuned): string[]{
@@ -134,22 +134,6 @@ export class TableTrainAIComponent implements OnInit {
 
     else return ''
   }
-
-  // removeTrain(){
-  //   this.apiService._deleteOneTrain(this.idToRemove).subscribe((res) => {
-  //     if(res){
-  //       this.notificationService.open({
-  //         title: `Eliminación Exitosa`,
-  //         message: `Se han eliminado los datos de entrenamiento y los archivos asociados.`,
-  //         clase: 'success'
-  //       })
-
-  //       this.idToRemove = ''
-
-  //       this.getTrains()
-  //     }
-  //   })
-  // }
 
   downloadJsonl(id: string){
     this.apiService.downloadFilesJsonl(id)

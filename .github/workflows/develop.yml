@@ -1,0 +1,54 @@
+name: Build and Deploy DEVELOP
+
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.9.0'
+      - uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Build
+        run: |
+          echo '${{ secrets.ENVIRONMENT_DEV }}' | base64 --decode >> .env
+          npm ci
+          npm run devBuild
+          ls -l
+  
+      - name: Send app to VPS
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: "dist/aitrain-front"
+          target: ./DEPLOYS/frontend/aitrain/develop
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            ls -l
+            sudo rm -rf /var/www/aitrain-develop/browser
+            cd DEPLOYS/frontend/aitrain/develop/dist/aitrain-front/
+            sudo mv browser /var/www/aitrain-develop
+            sudo systemctl restart nginx

@@ -6,6 +6,7 @@ import { BadgeStatusComponent } from "../badge-status/badge-status.component";
 import { CommonModule } from '@angular/common';
 import { IconFilesComponent } from "../icon-files/icon-files.component";
 import { NotificationService } from '../../../services/notification/notification.service';
+import { LocalStorageService } from '../../../services/localStorage/localstorage.service';
 
 @Component({
     selector: 'app-table-train-docs',
@@ -19,6 +20,7 @@ export class TableTrainDocsComponent implements OnInit {
   trainings$: Observable<Training[]> = this.apiService.getTrainings()
   trainings: Training[] = []
   idToRemove: string = ''
+  messageNeedConfig: boolean = true
 
   tableHeader: string[] = [
     'Nombre',
@@ -32,18 +34,24 @@ export class TableTrainDocsComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private localStorageService: LocalStorageService
   ){}
   
   ngOnInit(): void {
     this.getTrains()
   }
 
-
   getTrains(){
-    this.trainings$.subscribe((trains) => {
-      console.log('trains')
-      this.trainings = trains 
+    this.localStorageService.getConfiguration().then((env) => {
+      if(env.success){
+        this.messageNeedConfig = false
+        this.trainings$.subscribe((trains) => {
+          this.trainings = trains 
+        })
+      } else {
+        this.messageNeedConfig = true
+      }
     })
   }
 
@@ -112,9 +120,7 @@ export class TableTrainDocsComponent implements OnInit {
           message: `Se han eliminado los datos de entrenamiento y los archivos asociados.`,
           clase: 'success'
         })
-
         this.idToRemove = ''
-
         this.getTrains()
       }
     })

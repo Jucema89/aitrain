@@ -6,7 +6,6 @@ import { JsonObject, ResultObject } from "./app.interceptor.interface";
 import { NotificationService } from "../notification/notification.service";
 
 function handleError(httpError: HttpErrorResponse, notification: NotificationService) {
-    console.log('errors  httpError = ', httpError)
     //error connect with backend
     if(httpError.message.includes('Http failure response for') && httpError.url){
         const url: string[] = httpError.url?.split('/api/')
@@ -74,8 +73,6 @@ export function appInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): 
 
     const apiBaseUrl = localStorage.getItem('backend_url') || '';
     const notification = inject(NotificationService)
-
-    console.log(req.url);
     
     if(req.url.includes('/assets/')){
         return next(req)

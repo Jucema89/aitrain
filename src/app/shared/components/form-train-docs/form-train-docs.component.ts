@@ -20,6 +20,7 @@ import { TrainingCreate } from '../../../interfaces/training.interface';
 export class FormTrainDocsComponent implements OnInit {
   @Input() filesTrain: File[] = []
   @Output() clearForm: EventEmitter<boolean> = new EventEmitter()
+  @Output() blockComponent: EventEmitter<boolean> = new EventEmitter()
 
   formTrain: FormGroup = this.fb.group({})
   optionsModelGenerator$: Observable<OptionsSelect[]> = of([])
@@ -37,6 +38,7 @@ export class FormTrainDocsComponent implements OnInit {
       value: 'long_explained'
     }
   ]
+  messageNeedConfig: boolean = true
 
   constructor(
     private fb: FormBuilder,
@@ -67,6 +69,9 @@ export class FormTrainDocsComponent implements OnInit {
   
     if(modelsResponse.success && modelsResponse.models.length){
 
+      this.messageNeedConfig = false
+      this.blockComponent.emit(false)
+      
       const arrayModels: OptionsSelect[] = []
       modelsResponse.models.forEach((model) => {
         if( model.id.includes('gpt-') && 
@@ -85,24 +90,15 @@ export class FormTrainDocsComponent implements OnInit {
       this.formTrain.get('modelGeneratorData')?.enable()
       
     } else {
-
-      this.notificationService.open({
-        title: `Configuraciones no Existen`,
-        message: `Necesitas agregar tus variables de configuración para comenzar a entrenar.`,
-        clase: 'error'
-      })
-
-      this.router.navigate(['/configuration'])
+      this.messageNeedConfig = true
+      this.formTrain.disable()
+      this.blockComponent.emit(true)
     }
   }
 
   async onSubmit(){
     if(this.formTrain.valid){
-
-      console.log('this.formTrain.value = ', this.formTrain.value)
       const config = (await this.localStorageService.getConfiguration()).env
-      
-
       const training: TrainingCreate = {
         ...this.formTrain.value,
         openAiKey: config.openAiKey,
