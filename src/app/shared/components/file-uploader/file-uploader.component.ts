@@ -16,13 +16,13 @@ import { NotificationService } from '../../../services/notification/notification
 export class FileUploaderComponent implements OnChanges {
   @Output() fileAdded: EventEmitter<File[]> = new EventEmitter()
   @Input() clearFiles: boolean = false
+  @Input() blockComponent: boolean = false
 
   constructor(
     private notificationService: NotificationService
   ){}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changhes detected')
     if(this.clearFiles){
       this.files = []
     }
@@ -35,14 +35,10 @@ export class FileUploaderComponent implements OnChanges {
 
 
   onFileDropped(files: FileList) {
-    console.log('Archivos arrastrados:', files)
     const arrayFiles = Array.from(files)
     const arrayFilesError: File[] = []
     
     arrayFiles.forEach((file) => {
-
-      console.log('FILE dropped = ', file)
-
       if(this.iSvalidTypeFile(file.name)){
         this.files.push(file)
       } else {
@@ -58,7 +54,6 @@ export class FileUploaderComponent implements OnChanges {
   }
 
   onDragOverStatus(isDragging: boolean) {
-    console.log('Estado de arrastre:', isDragging);
     // Maneja el estado de arrastre
   }
 
@@ -70,9 +65,6 @@ export class FileUploaderComponent implements OnChanges {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-
-      console.log('FILE selected = ', input.files[0])
-      
       if(this.iSvalidTypeFile(input.files[0].name)){
         this.files.push(input.files[0])
         this.fileAdded.emit( this.files )
@@ -88,7 +80,6 @@ export class FileUploaderComponent implements OnChanges {
   }
 
   iSvalidTypeFile(fileName: string): boolean {
-    console.log('ext name getting = ', fileName)
     const nameArray: string[] = fileName.split('.');
     const ext: string = nameArray[ nameArray.length - 1 ];
 
@@ -132,8 +123,8 @@ export class FileUploaderComponent implements OnChanges {
         })
       } else {
         this.notificationService.open({
-          title: 'Error in file types',
-          message: `The file: ${files[0].name} has an illegal extension`,
+          title: 'Error en Archivo',
+          message: `El archivo: ${files[0].name} poseé una extension no valida.`,
           clase: 'alert'
         })
       }

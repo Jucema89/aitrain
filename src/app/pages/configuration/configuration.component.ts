@@ -96,7 +96,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     this.formConfig.get('openAiKey')?.setErrors(null)
     this.apiService.getModelsOpenAIAvailable(apiKey)
     .subscribe((res) => {
-      console.log('res = ', res)
       if(res.success && res.data.length) {
         this.modelsAvailable = res.data
         this.notificationService.open({
@@ -125,7 +124,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     this.awaitValidationBackend = true
     this.apiService.validateBackend(backendUrl).subscribe({
       next: (response) => {
-        console.log('la response aun en next = ', response)
         if(response.success && response.data.message === 'Server backend Aitrain ready'){
           this.awaitValidationBackend = false
           this.checkValidationBackend = true
@@ -144,37 +142,36 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
     const control = formName.get(idControl)
     if(control){
       if (control.hasError('required')) {
-        return 'This Field is Required';
+        return 'Este campo es requerido';
       }
   
       if (control.hasError('pattern')) {
-        return 'This field does not comply with the expected format'
+        return 'Este valor no es compatible con el formato esperado'
       }
 
       if (control.hasError('invalidBackendUrl')) {
-        return 'This Url does not comply with the backend format'
+        return 'Esta Url no es compatible con el formato de Backend'
       }
 
       if (control.hasError('backendError')) {
-        return 'Backend Not found using this Url, change It'
+        return 'No existe un backend valido con esta Url, cambiala.'
       }
 
       if (control.hasError('invalidOpenAIkey')) {
-        return 'This key does not comply with the OpenAI apiKey format '
+        return 'Esta Key no es compatible con el formato de Key de OpenAI. Revisala. '
       }
 
       if (control.hasError('openAiKeyError')) {
-        return 'This key does not exist in OpenAI or is inactive.'
+        return 'Esta Key no existe en OpenAI o esta inactiva.'
       }
   
-      return 'This field is wrong'
+      return 'Este campo tiene un error'
     } else {
       return ''
     }
   }
 
   handlerSearch(event: SearchComponentClick){
-    console.log('eventIn handler = ', event)
     if(event.click) {
       switch (event.control) {
         case 'openAiKey':
@@ -196,7 +193,6 @@ export class ConfigurationComponent implements OnInit, OnDestroy {
       debounceTime(800),
       map((data) => data))
       .subscribe((change: string) => {
-        console.log('change in backend input = ', change)
        if((change && change !== this.formConfig.get('backendUrl')?.value) && this.checkValidationBackend){
         this.checkValidationBackend = false
        }

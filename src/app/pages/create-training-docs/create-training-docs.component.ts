@@ -13,6 +13,7 @@ export class CreateTrainingDocsComponent {
 
     filesToTraining: File[] = []
     clearFiles: boolean = false
+    blockDropzone: boolean = false
     
     handlerFiles(files: File[]){
         this.filesToTraining = files
@@ -20,6 +21,10 @@ export class CreateTrainingDocsComponent {
 
     handleClearForm(event: boolean){
         this.clearFiles = event
+    }
+
+    handlerLockDropzone(event: boolean){
+        this.blockDropzone = event
     }
 
 }

@@ -45,7 +45,7 @@ export class ApiService {
         result(data)
         
       } catch (error) {
-        console.log('error create Train FETCH = ', error);
+        console.error('error create Train FETCH = ', error);
       }
     })
   }

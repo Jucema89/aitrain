@@ -48,7 +48,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             ls -l
-            sudo rm -rf ../../../RUNNING/frontend/aitrain/production/
-            cd ./DEPLOYS/frontend/aitrain/production/dist
-            sudo mv aitrain-front ../../../RUNNING/frontend/aitrain/production/
+            sudo rm -rf /var/www/aitrain-production/browser
+            cd DEPLOYS/frontend/aitrain/production/dist/aitrain-front/
+            sudo mv browser /var/www/aitrain-production
             sudo systemctl restart nginx

@@ -36,7 +36,6 @@ export class SnackbarComponent implements OnInit, OnDestroy {
 
     this.snackbarSubs$ = this.notificationService.showNotify$.pipe(
       map((notiData: NotificationData) => {
-        console.log('notiData = ', notiData)
         this.messageUseHtml = notiData.messageUseHtml || false;
         this.messageHtml =  this.sanitizer.bypassSecurityTrustHtml(notiData.messageHtml || '');
         this.title = notiData.title;
@@ -45,7 +44,6 @@ export class SnackbarComponent implements OnInit, OnDestroy {
         this.time = notiData.time ? notiData.time : '';
         //return true
     })).subscribe((response) => {
-      console.log('la response snakbar = ', response)
       this.openSnackbar()
     });
   }
