@@ -1,8 +1,11 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { TrainingsComponent } from './trainings/trainings.component';
-import { CreateTrainingComponent } from './create-training/create-training.component';
-import { ConfigurationComponent } from './configuration/configuration.component';
+import { HomeComponent } from './pages/home/home.component';
+import { TrainingsDocsComponent } from './pages/trainings-docs/trainings-docs.component';
+import { CreateTrainingDocsComponent } from './pages/create-training-docs/create-training-docs.component';
+import { ConfigurationComponent } from './pages/configuration/configuration.component';
+import { CreateTrainingAIComponent } from './pages/create-training-AI/create-training-ai.component';
+import { TrainingsAIComponent } from './pages/trainings-AI/trainings-ai.component';
+import { ChatComponent } from './shared/components/chat/chat.component';
 
 export const routes: Routes = [
     {
@@ -14,11 +17,11 @@ export const routes: Routes = [
         children: [
             {
                 path: 'list',
-                component: TrainingsComponent,
+                component: TrainingsDocsComponent,
             },
             {
                 path: 'create',
-                component: CreateTrainingComponent,
+                component: CreateTrainingDocsComponent,
             }
         ]
     },
@@ -27,17 +30,17 @@ export const routes: Routes = [
         children: [
             {
                 path: 'list',
-                component: TrainingsComponent,
+                component: TrainingsAIComponent,
             },
             {
                 path: 'create',
-                component: CreateTrainingComponent,
+                component: CreateTrainingAIComponent,
             }
         ]
     },
     {
-        path: 'create',
-        component: CreateTrainingComponent
+        path: 'chat',
+        component: ChatComponent
     },
     {
         path: 'configuration',

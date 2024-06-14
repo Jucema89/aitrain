@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Event, NavigationEnd, Router, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { IStaticMethods } from 'preline/preline';
 import { HeaderComponent } from "./shared/components/header/header.component";
-import { TableTrainComponent } from './shared/components/table-train/table-train.component';
 import { FooterComponent } from "./shared/components/footer/footer.component";
 import { SnackbarComponent } from "./services/notification/snackbar/snackbar.component";
 declare global {
@@ -17,7 +16,7 @@ declare global {
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
-    imports: [CommonModule, RouterOutlet, RouterLinkActive, HeaderComponent, TableTrainComponent, FooterComponent, SnackbarComponent]
+    imports: [CommonModule, RouterOutlet, RouterLinkActive, HeaderComponent, FooterComponent, SnackbarComponent]
 })
 export class AppComponent {
   title = 'aitrain-front'
