@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LogoAitrainComponent } from './logo-aitrain.component';
+import { CardsStatsComponent } from './cards-stats.component';
 
-describe('LogoAitrainComponent', () => {
-  let component: LogoAitrainComponent;
-  let fixture: ComponentFixture<LogoAitrainComponent>;
+describe('CardsStatsComponent', () => {
+  let component: CardsStatsComponent;
+  let fixture: ComponentFixture<CardsStatsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LogoAitrainComponent]
+      imports: [CardsStatsComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(LogoAitrainComponent);
+
+    fixture = TestBed.createComponent(CardsStatsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
