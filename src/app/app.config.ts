@@ -16,7 +16,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(
       routes,
-      //withPreloading(PreloadAllModules)
     ),
     provideHttpClient (
       withInterceptors([appInterceptor]),

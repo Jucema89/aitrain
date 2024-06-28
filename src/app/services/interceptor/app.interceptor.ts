@@ -91,7 +91,7 @@ export function appInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): 
             return handleError(error, notification)
         })
     )
-  }
+}
 
 
 function transformObjectToArray(obj: JsonObject): ResultObject[] {
