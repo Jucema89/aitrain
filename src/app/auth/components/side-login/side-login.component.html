@@ -1,0 +1,43 @@
+<!-- Hero -->
+<div class="relative overflow-hidden max-h-full">
+    <div class="mx-auto max-w-screen-md py-6 px-4 sm:px-6 md:max-w-screen-xl md:py-16 lg:py-20 md:px-8 h-fit">
+      <div class="md:pe-8 md:w-1/2 xl:pe-0 xl:w-5/12">
+        
+        <app-logo-aitrain addClass="mb-8" style="text-align: -webkit-center"/> 
+       
+        <h1 class="text-3xl text-center text-gray-800 font-bold md:text-4xl md:leading-tight lg:text-5xl lg:leading-tight dark:text-neutral-200">
+          Use your data, <br>  <span class="bg-clip-text bg-gradient-to-tl from-[#25CAEB] to-[#5E17D8] text-transparent">Create your AI </span>
+        </h1>
+        <div class="text-center">
+          <p class="mt-2 text-sm text-gray-600 dark:text-neutral-400">
+            {{componentState === 'login' ? 'Don`t have an account yet?' : 'Already have an account?'}}
+            <a class="text-blue-500 decoration-2 hover:text-blue-700 font-medium dark:text-blue-500 cursor-pointer" (click)="componentState === 'login' ? componentState = 'register' : componentState = 'login'">
+              {{ componentState === 'login' ? 'Sign Up' : 'Sign In'}}
+            </a>
+          </p>
+        </div>
+    
+        <div class="mt-5">
+          <div #googleBtn class="py-3 px-4">
+          </div> 
+    
+          <div class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-neutral-500 dark:before:border-neutral-600 dark:after:border-neutral-600">Or</div>
+    
+           @if(componentState === 'login'){
+            <app-login [(formState)]="componentState" />
+           }
+
+           @if(componentState === 'register'){
+            <app-register />
+           }
+
+           @if(componentState === 'recovery'){
+              <app-recovery />
+           }
+        </div>
+      </div>
+    </div>
+
+    <div class="hidden md:block md:absolute md:top-0 md:start-1/2 md:end-0 h-full bg-no-repeat bg-center bg-cover"  style="background-image: linear-gradient(#25caebaf, #5e17d8b6), url(assets/img/training-ai-using-aitrain.jpg)">
+    </div>
+  </div>

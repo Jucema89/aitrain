@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { LogoAitrainComponent } from "../logo-aitrain/logo-aitrain.component";
 import { CreatorCardComponent } from "../creator-card/creator-card.component";
+import { LogoAitrainComponent } from "../logo-aitrain/logo-aitrain.component";
+
 
 @Component({
     selector: 'app-footer',
     standalone: true,
     templateUrl: './footer.component.html',
-    imports: [LogoAitrainComponent, CreatorCardComponent]
+    imports: [CreatorCardComponent, LogoAitrainComponent]
 })
 export class FooterComponent {
 
