@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
+import { SideLoginComponent } from './components/side-login/side-login.component';
 import { RecoveryComponent } from './components/recovery/recovery.component';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: SideLoginComponent
   },
   {
     path: 'recovery',
@@ -14,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    component: LoginComponent
+    component: SideLoginComponent
   },
 ];
 

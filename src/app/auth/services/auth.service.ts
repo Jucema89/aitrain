@@ -7,7 +7,7 @@ import { Observable, from, of } from "rxjs";
 import { Router } from "@angular/router";
 import { User } from "../../interfaces/user.interface";
 import { NotificationService } from "../../services/notification/notification.service";
-import { SingIn, UserStore } from "../../interfaces/auth.interface";
+import { RequestRecoveryPassword, SingIn, UserStore } from "../../interfaces/auth.interface";
 
 export interface Renew_Token {
   success: boolean
@@ -31,28 +31,21 @@ export class AuthService {
     private notifyService: NotificationService
   ) { }
 
-  recoveryPassword(email: string): Observable<string> {
-    return of('')
-    // return this.http.post<RequestRecoveryPassword>('/auth/recovery-password', { email }).pipe(
-    //   map((response) => response.message)
-    // );
-  }
-
   validateToken(): Observable<boolean> {
-    const token = localStorage.getItem('Bearer-token') || '';
+    const token = localStorage.getItem('token') || '';
 
     if (token === '') {
-      // console.log('token es string vacio')
+      console.log('token es string vacio')
       return of(false)
     }
 
     return this.http.get<Observable<Response>>(`/auth/validate-token`, {
       headers: {
-        'Bearer-token': token
+        'token': token
       }
     }).pipe(
       map((resp: any) => {
-        // console.log('la response en validateToken = ', resp)
+        console.log('la response en validateToken = ', resp)
         if (resp.data === 'Token Valido') {
           return true
         } else {
@@ -64,7 +57,7 @@ export class AuthService {
   }
 
   validateAdminToken(): Observable<boolean> {
-    const token = localStorage.getItem('Bearer-token') || '';
+    const token = localStorage.getItem('token') || '';
 
     if (token === '') {
       return of(false)
@@ -73,7 +66,7 @@ export class AuthService {
     return this.http.get<Observable<{ success: boolean, isAdmin: boolean }>>
       (`/auth/validate-admin`, {
         headers: {
-          'Bearer-token': token
+          'token': token
         }
       }).pipe(
         map((resp: any) => {
@@ -89,7 +82,7 @@ export class AuthService {
   }
 
   validateSuperAdminToken(): Observable<boolean> {
-    const token = localStorage.getItem('Bearer-token') || '';
+    const token = localStorage.getItem('token') || '';
 
     if (token === '') {
       return of(false)
@@ -98,7 +91,7 @@ export class AuthService {
     return this.http.get<Observable<{ success: boolean, isSuperAdmin: boolean }>>
       (`/auth/validate-superadmin`, {
         headers: {
-          'Bearer-token': token
+          'token': token
         }
       }).pipe(
         map((resp: any) => {
@@ -113,61 +106,16 @@ export class AuthService {
       );
   }
 
-  renewToken(): Observable<Renew_Token> {
-
-    const refresh_token = localStorage.getItem('Bearer-refresh-token') || '';
-
-    if (refresh_token === '') {
-      this.logOut()
-    }
-
-    return this.http.post<Renew_Token>(`/auth/renew`, {
-      refresh_token
-    }).pipe(tap((resp: Renew_Token) => {
-      if (resp.success) {
-        localStorage.setItem('Bearer-token', resp.token)
-        localStorage.setItem('Bearer-refresh-token', resp.refresh_token);
-        return of(resp)
-      } else {
-        this.logOut()
-        return of(resp)
-      }
-    }))
-  }
-
-  setLocalStorage(data: SingIn) {
-    localStorage.setItem('Bearer-token', data.token);
-    localStorage.setItem('Bearer-refresh-token', data.token);
-    localStorage.setItem('email', data.user.email);
-    localStorage.setItem('user', JSON.stringify(data.user));
-    // localStorage.setItem('Bearer-role', JSON.stringify(data.role));
-  }
-
-  clearLocalStorage() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refresh-token');
-    localStorage.removeItem('email');
-    localStorage.removeItem('user');
-    // localStorage.removeItem('Bearer-role');
-  }
-
   getUser(): Promise<UserStore | string> {
     return new Promise((result, reject) => {
       try {
 
-        let userData: User | string = localStorage.getItem('user') || '';
-        // let roleData: Role | string = localStorage.getItem('Bearer-role') || '';
+        let userData: UserStore | string = localStorage.getItem('user') || '';
+  
+        if (userData !== '') {
+          userData = JSON.parse(userData) as UserStore;
 
-        // if(userData !== '' && roleData !== '') {
-        if (userData !== '' && typeof(userData) !== 'string') {
-          //userData = JSON.parse(userData) as User;
-          // roleData = JSON.parse(roleData) as Role;
-          const user: UserStore = {
-            user: JSON.parse(userData) as User,
-            // role: roleData,
-          }
-
-          result(user)
+          result(userData)
         } else {
           result('No existe Usuario')
         }
@@ -179,33 +127,122 @@ export class AuthService {
     })
   }
 
-  getUser$(): Observable<User> {
-    return from(this.getUser()).pipe(map((res) => {
-      if (typeof (res) === 'string') {
-        throw new Error('No hay usuario, vuelve a ingresar')
+  getAccountActive(email: string):Observable<{success: boolean, message: string, next: boolean}> {
+    return this.http.post<{active_account: boolean, success: boolean, user_validate_email: boolean}>('/auth/account-active', {email: email}).pipe(map((account) => 
+    {
+      if(account.success){
+
+        if(!account.user_validate_email){
+          return {
+            success: true,
+            message: 'Revisa tu email, tienes un correo con el enlace para que valides tu cuenta.',
+            next: false
+          }
+        } else if(account.user_validate_email && account.active_account){
+           //cuenta actica y con email validado
+          return {
+            success: true,
+            message: 'Cuenta Valida y activa',
+            next: true
+          }
+        } else {
+          return {
+            success: false,
+            message: 'No encontramos la cuenta, intentelo de nuevo o contactese a soporte@lexui.com',
+            next: false
+          }
+        }
+
       } else {
-        return res.user
+        return {
+          success: false,
+          message: 'No encontramos la cuenta, intentelo de nuevo o contactese a soporte@lexui.com',
+          next: false
+        }
       }
-    }))
+    }
+    ))
   }
 
-  login(formData: { email: string, password: string }): Observable<{ success: boolean, data: SingIn | string }> {
-    return this.http.post<{ success: boolean, data: SingIn | string }>(`/auth/login`, formData,
+  isTokenValidateToConfirm(token: string): Observable<{title: string, success: boolean, message: string}>{
+    return this.http.get<{title: string, success: boolean, message: string}>(`/auth/validate-token-for-comfirm/${token}`)
+  }
+
+  resendTokenAccount(token: string, email: string): Observable<{title: string, success: boolean, message: string}>{
+    return this.http.post<{title: string, success: boolean, message: string}>(`/auth/resend-token-account`, { token_last: token, email })
+  }
+
+  setLocalStorage(data: SingIn) {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+  }
+
+  clearLocalStorage() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  }
+
+  register(formData: { email: string, password: string, type_person: string, role: string }): Observable<SingIn>{
+    return this.http.post<SingIn>(`/auth/register`, formData,
     )
       .pipe(
         tap((response) => {
 
           if (response.success) {
-            const userData = response.data as SingIn;
+            const userData = response as SingIn;
             this.setLocalStorage(userData)
           }
         }),
         map((response) => response))
   }
 
+  completeRegister(name: string, specialist_areas: string[], token: string){
+    return this.http.post<{title: string, success: boolean, message: string}>(`/auth//complete-profile/${token}`, {
+      name, specialist_areas
+    })
+  }
+
+  login(formData: { email: string, password: string }): Observable<SingIn> {
+    return this.http.post<SingIn>(`/auth/login`, formData,
+    )
+      .pipe(
+        tap((response) => {
+          console.log('response user = ', response)
+          if (response.success) {
+            const userData = response as SingIn;
+            this.setLocalStorage(userData)
+          }
+        }),
+        map((response) => response),
+        //catchError((err) => err)
+      )
+  }
+
   logOut() {
     this.clearLocalStorage();
     this.router.navigate(['/auth/login'])
   }
+
+  signInGoogle(credential: string): Observable<SingIn> {
+    return this.http.post<SingIn>(`/auth/google`, {token: credential})
+    .pipe(
+    tap((response) => {
+      console.log('response back in service = ', response)
+      if(response.success){
+        const userData = response;
+        this.setLocalStorage(userData)
+      }
+    }),
+    map((response) => response))
+  }
+
+  recoveryAccount(email: string): Observable<RequestRecoveryPassword>{
+    return this.http.post<RequestRecoveryPassword>(`/auth/recovery`, { email: email })
+  }
+
+  changePassword(pass: string, token: string): Observable<RequestRecoveryPassword>{
+    return this.http.post<RequestRecoveryPassword>(`/auth/change-password/${token}`, { password: pass })
+  }
+
 
 }

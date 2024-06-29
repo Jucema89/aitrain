@@ -6,7 +6,7 @@ import { AfterViewInit, Component, Input } from '@angular/core';
   imports: [],
   template: `
     @if(type === 'pc'){
-      <svg id="logo-svg" class="w-30 h-auto" width="120px" height="auto" viewBox="0 0 3197 787" version="1.1">
+      <svg id="logo-svg" [class]="'w-30 h-auto ' + addClass " width="120px" height="auto" viewBox="0 0 3197 787" version="1.1">
           <defs>  
             <linearGradient id="logo-gradient" x1="50%" y1="0%" x2="50%" y2="100%" > 
                 <stop offset="0%" stop-color="#5E17D8">
@@ -24,7 +24,7 @@ import { AfterViewInit, Component, Input } from '@angular/core';
     }
 
     @if(type === 'phone'){
-      <svg id="logo-svg" class="w-24 h-auto" width="120px" height="auto" viewBox="0 0 3197 787" version="1.1">
+      <svg id="logo-svg" [class]="'w-24 h-auto ' + addClass" width="120px" height="auto" viewBox="0 0 3197 787" version="1.1">
           <defs>  
             <linearGradient id="logo-gradient" x1="50%" y1="0%" x2="50%" y2="100%" > 
                 <stop offset="0%" stop-color="#5E17D8">
@@ -44,4 +44,5 @@ import { AfterViewInit, Component, Input } from '@angular/core';
 })
 export class LogoAitrainComponent  {
   @Input() type: 'phone' | 'pc' = 'pc'
+  @Input() addClass: string = ''
 }
