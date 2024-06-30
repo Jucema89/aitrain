@@ -5,13 +5,15 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { environment } from '../../../../environments/environment';
+import { InputComponent } from '../../../shared/components/form/input/input.component';
+import { InputPasswordComponent } from "../../../shared/components/form/input-password/input-password.component";
 declare const google: any;
 @Component({
     selector: 'app-register',
     standalone: true,
     templateUrl: './register.component.html',
     styleUrl: './register.component.scss',
-    imports: [LogoAitrainComponent, ReactiveFormsModule]
+    imports: [LogoAitrainComponent, ReactiveFormsModule, InputComponent, InputPasswordComponent]
 })
 export class RegisterComponent {
 
@@ -34,7 +36,7 @@ export class RegisterComponent {
     type_person: new FormControl('person', [Validators.required]),
     role: new FormControl('user_person', [Validators.required]),
     password: new FormControl('', [Validators.required, Validators.pattern(this.StrongPasswordRegx)]),
-    repeat_password: new FormControl('', [Validators.required]),
+    repeat_password: new FormControl('', [Validators.required, Validators.pattern(this.StrongPasswordRegx)]),
     accept_terms: new FormControl(false, [Validators.requiredTrue])
   })
 
@@ -68,6 +70,40 @@ export class RegisterComponent {
     })
   }
 
+  getErrorMessage( idControl: string): string {
+    const control = this.form.get(idControl)
+
+    if(control){
+      if (control.hasError('required')) {
+        return 'This field is required';
+      }
+  
+      if (control.hasError('pattern')) {
+        return 'This value is not compatible with the expected format'
+      }
+
+      // if (control.hasError('invalidBackendUrl')) {
+      //   return 'Esta Url no es compatible con el formato de Backend'
+      // }
+
+      // if (control.hasError('backendError')) {
+      //   return 'No existe un backend valido con esta Url, cambiala.'
+      // }
+
+      // if (control.hasError('invalidOpenAIkey')) {
+      //   return 'Esta Key no es compatible con el formato de Key de OpenAI. Revisala. '
+      // }
+
+      // if (control.hasError('openAiKeyError')) {
+      //   return 'Esta Key no existe en OpenAI o esta inactiva.'
+      // }
+  
+      return 'This field has an error'
+    } else {
+      return ''
+    }
+  }
+
 
   submit() {
     if(this.form.valid){
@@ -97,7 +133,6 @@ export class RegisterComponent {
         }
       })
     }
-    //this.router.navigate(['/dashboards/dashboard1']);
   }
 
 

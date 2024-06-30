@@ -13,6 +13,24 @@ import { OptionsSelect, TypeControl, TypeInput } from '../form.interface';
 })
 export class InputComponent {
 
+  builder = inject(FormBuilder);
+
+  @Input() formGroup: FormGroup = this.builder.group({})
+  @Input() control: string = ''
+  @Input() icon: string = ''
+  @Input() type: TypeControl = 'text'
+  @Input() inputType: TypeInput = 'text'
+  @Input() selectOption: OptionsSelect[] = []
+  @Input() textareaRow: number = 3
+  @Input() label: string = ''
+  @Input() placeholder: string = ''
+  @Input() errorMessage: string = ''
+  @Input() checkShow: boolean = false
+  @Input() readonly: boolean = false
+  @Input() tooltip: string = ''
+  @Input() internLabel: string = ''
+  @Output() keydownEnter: EventEmitter<boolean> = new EventEmitter();
+
   errorClass: string = "px-3.5 py-2 block w-full border-red-500 rounded-md text-sm focus:border-red-500 focus:ring-red-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
 
   normalClass: string = "block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 disabled:opacity-50 disabled:pointer-events-none"
@@ -32,25 +50,6 @@ export class InputComponent {
   internalLabelClass = "px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500 dark:bg-neutral-700 dark:border-neutral-700 dark:text-neutral-400"
 
   errorInternalLabelClass = "px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-red-200 bg-red-50 text-sm text-red-500 dark:bg-neutral-700 dark:border-red-700 dark:text-red-400"
-
-  builder = inject(FormBuilder);
-
-  @Input() formGroup: FormGroup = this.builder.group({})
-  @Input() control: string = ''
-  @Input() icon: string = ''
-  @Input() type: TypeControl = 'text'
-  @Input() inputType: TypeInput = 'text'
-  @Input() selectOption: OptionsSelect[] = []
-  @Input() textareaRow: number = 3
-  @Input() label: string = ''
-  @Input() placeholder: string = ''
-  @Input() errorMessage: string = ''
-  @Input() checkShow: boolean = false
-  @Input() readonly: boolean = false
-  @Input() tooltip: string = ''
-  @Input() internLabel: string = ''
-  @Output() keydownEnter: EventEmitter<boolean> = new EventEmitter();
-
 
   setClassStyle(control: string): string {
 
@@ -86,8 +85,5 @@ export class InputComponent {
     }else {
       return true
     }
-    
   }
-
-
 }
